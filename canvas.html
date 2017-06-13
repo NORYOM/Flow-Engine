@@ -1,0 +1,31 @@
+<!doctype html>
+<head>
+	<meta charset="UTF-8">
+	<script src="./BaseObj.js"></script>
+	<script src="./Button.js"></script>
+	<script src="./ParamPoint.js"></script>
+	<script src="./Block.js"></script>
+	<script src="./BlockSwitch.js"></script>
+	<script src="./BlockDummy.js"></script>
+	<script src="./Bezier.js"></script>
+	<script src="./driver.js"></script>
+	<script src="./bg.js"></script>
+
+	<script>
+		var ctx;
+		var fps = 60;
+		var theCanvas;
+		window.onload = function(){
+			initCanvas("canvas1",800,600);
+		}
+	</script>
+</head>
+<body bgcolor="#777777">
+	<input type="button" value="  + obj  " onclick="addObj();">
+	<input type="button" value="  + switch  " onclick="addSwitchObj();">
+	<input type="button" value="  + dummy  " onclick="addDummyObj();">
+	<br>
+	<canvas id="canvas1" width="800" height="600" style="border:1px solid red; cursor:default;">
+		do not support HTML5
+	</canvas>
+</body>
