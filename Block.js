@@ -34,21 +34,22 @@ function Block(canvas){
     this.onmousemove = function(e){
         this.prototype.onmousemove.call(this,e);
     };
+    this.doAction = function(){
+
+    };
 
     this.rend = function(ctx){
         this.prototype.rend.call(this,ctx);
 
         // in
-        this.inPt[0].setPos(this.x-this.r,this.y+this.r);
-        this.inPt[1].setPos(this.x-this.r,this.y+this.h);
         for(var i=0;i<this.inPt.length;i++){
+            this.inPt[i].setPos(this.x-this.r,this.y+this.r+this.r*i);
             this.inPt[i].rend(ctx);
         }
 
         // out
-        this.outPt[0].setPos(this.x+this.w+this.r,this.y+this.h-this.r);
-        this.outPt[1].setPos(this.x+this.w+this.r,this.y+this.h);
         for(var i=0;i<this.outPt.length;i++){
+            this.outPt[i].setPos(this.x+this.w+this.r,this.y+this.h-this.r*i);
             this.outPt[i].rend(ctx);
         }
     };

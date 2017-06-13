@@ -9,6 +9,7 @@ function ParamPoint(canvas){
     this.colorOccupied = "#cc7777";
     this.colorMouseDown = "#7777cc";
     this.colorOn = "#cccc00";
+    this.value = null;
 
     var parameterPointR = 5;
     var mouseDrag = false;
