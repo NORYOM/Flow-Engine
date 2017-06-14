@@ -47,6 +47,40 @@ function addDummyObj(){
 	objDummy.priority = objArr.length;
 	objArr.push(objDummy);
 }
+function showPrj(){
+	var prj = {};
+
+	var prjObjArr = [];
+	for(var i=0;i<objArr.length;i++){
+	    if(objArr[i]){
+            var prjObj = {};
+            prjObj.id = objArr[i].id;
+            prjObj.type = objArr[i].constructor.name;
+            prjObj.x = objArr[i].x;
+            prjObj.y = objArr[i].y;
+            prjObj.priority = objArr[i].priority;
+            prjObj.inPt = objArr[i].inPt;
+            prjObj.outPt = objArr[i].outPt;
+            prjObjArr.push(prjObj);
+	    }
+	}
+	prj.obj = prjObjArr;
+
+	var prjBezierArr = [];
+	for(var i=0;i<bezierArr.length;i++){
+	    if(bezierArr[i]){
+            var prjBezier = {};
+            prjBezier.startObj = bezierArr[i].getStartObj().id;
+            prjBezier.endObj = bezierArr[i].getEndObj().id;
+            prjBezier.isDrawn = bezierArr[i].isDrawn();
+            prjBezierArr.push(prjBezier);
+	    }
+	}
+	prj.bezier = prjBezierArr;
+
+	console.log(prj);
+	console.log(JSON.stringify(prj));
+}
 
 function reOrder(){
 	var tempPriority;
@@ -226,6 +260,11 @@ function render(){
 			continue;// already drawn, no need draw again
 		}
 		bezierArr[i].rend(ctx);
+
+		// transfer value from outPt to inPt
+		if(bezierArr[i].getStartObj() && bezierArr[i].getEndObj()){
+		    bezierArr[i].getEndObj().value = bezierArr[i].getStartObj().value;
+		}
 	}
 
 	// move block

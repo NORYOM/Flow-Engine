@@ -2,13 +2,14 @@ function ParamPoint(canvas){
     var cvs = canvas;
     var cvsRect = canvas.getBoundingClientRect();
 
+    this.id = (new Date()).getTime()+Math.random();
     this.x = 0;
     this.y = 0;
-    this.colorOff = "#cccccc";
-    this.colorReday = "#77cc77";
-    this.colorOccupied = "#cc7777";
-    this.colorMouseDown = "#7777cc";
-    this.colorOn = "#cccc00";
+    colorOff = "#cccccc";
+    colorReday = "#77cc77";
+    colorOccupied = "#cc7777";
+    colorMouseDown = "#7777cc";
+    colorOn = "#cccc00";
     this.value = null;
 
     var parameterPointR = 5;
@@ -100,8 +101,8 @@ function ParamPoint(canvas){
     this.rend = function(ctx){
         // refresh canvas bounding, incase scroll page
         cvsRect = canvas.getBoundingClientRect();
-        var ptColor = mouseDrag?(lnkNum?(readyForLink?this.colorOccupied:this.colorOn):(readyForLink?this.colorReday:this.colorOff)):(lnkNum?this.colorOn:this.colorOff);
-        ptColor = mouseDown?this.colorMouseDown:ptColor;
+        var ptColor = mouseDrag?(lnkNum?(readyForLink?colorOccupied:colorOn):(readyForLink?colorReday:colorOff)):(lnkNum?colorOn:colorOff);
+        ptColor = mouseDown?colorMouseDown:ptColor;
 
         ctx.beginPath();
         ctx.arc(this.x, this.y, parameterPointR, (Math.PI/180)*0, (Math.PI/180)*360, false);

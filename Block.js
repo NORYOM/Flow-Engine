@@ -1,6 +1,7 @@
 function Block(canvas){
     BaseObj.call(this, canvas);
     this.prototype = new BaseObj(canvas);
+    this.id = (new Date()).getTime()+Math.random();
     this.h=100;
 
     this.inPt = [new ParamPoint(canvas),new ParamPoint(canvas)];

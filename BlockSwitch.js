@@ -1,6 +1,7 @@
 function BlockSwitch(canvas){
     Block.call(this, canvas);
     this.parentType = new Block(canvas);
+    this.id = (new Date()).getTime()+Math.random();
     this.h=70;
     this.w=150;
     this.title="Switch";
