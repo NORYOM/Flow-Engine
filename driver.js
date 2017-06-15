@@ -77,9 +77,93 @@ function showPrj(){
 	    }
 	}
 	prj.bezier = prjBezierArr;
+}
 
-	console.log(prj);
-	console.log(JSON.stringify(prj));
+function readPrj(){
+    var prj = JSON.parse(document.getElementById("json").value);
+    var prjObjArr = prj.obj;
+    var prjBezierArr = prj.bezier;
+
+    // ready for reload bezier with point
+    var ptLstTemp = [];
+
+    // reload block
+    objArr = [];
+    for(var i=0;i<prjObjArr.length;i++){
+        if(prjObjArr[i]){
+            var objTemp = null;
+            if(prjObjArr[i].type=="Block"){
+                objTemp = new Block(theCanvas);
+            }
+            if(prjObjArr[i].type=="BlockSwitch"){
+                objTemp = new BlockSwitch(theCanvas);
+            }
+            if(prjObjArr[i].type=="BlockDummy"){
+                objTemp = new BlockDummy(theCanvas);
+            }
+
+            objTemp.setX(prjObjArr[i].x);
+            objTemp.setY(prjObjArr[i].y);
+            objTemp.priority = prjObjArr[i].priority;
+
+            // reload inPt
+            var inPtsTemp = [];
+            if(prjObjArr[i].inPt){
+                for(var j=0;j<prjObjArr[i].inPt.length;j++){
+                    var ptTemp = new ParamPoint(theCanvas);
+                    ptTemp.id = prjObjArr[i].inPt[j].id;
+                    ptTemp.x = prjObjArr[i].inPt[j].x;
+                    ptTemp.y = prjObjArr[i].inPt[j].y;
+                    ptTemp.value = prjObjArr[i].inPt[j].value;
+                    inPtsTemp.push(ptTemp);
+                    ptLstTemp.push(ptTemp);
+                }
+            }
+            // reload outPt
+            var outPtsTemp = [];
+            if(prjObjArr[i].outPt){
+                for(var j=0;j<prjObjArr[i].outPt.length;j++){
+                    var ptTemp = new ParamPoint(theCanvas);
+                    ptTemp.id = prjObjArr[i].outPt[j].id;
+                    ptTemp.x = prjObjArr[i].outPt[j].x;
+                    ptTemp.y = prjObjArr[i].outPt[j].y;
+                    ptTemp.value = prjObjArr[i].outPt[j].value;
+                    outPtsTemp.push(ptTemp);
+                    ptLstTemp.push(ptTemp);
+                }
+            }
+            objTemp.inPt = inPtsTemp;
+            objTemp.outPt = outPtsTemp;
+            objTemp.id = prjObjArr[i].id;
+            objArr.push(objTemp);
+	    }
+    }
+
+    // reload bezier
+    bezierTemp = null;
+    bezierArr = [];
+    for(var i=0;i<prjBezierArr.length;i++){
+        if(prjBezierArr[i]){
+            var lineTemp = new Bezier(theCanvas);
+            for(var j=0;j<ptLstTemp.length;j++){
+                if(ptLstTemp[j].id==prjBezierArr[i].startObj){
+                    lineTemp.setStartObj(ptLstTemp[j]);
+                    ptLstTemp[j].setLink(lineTemp);
+                    ptLstTemp[j].addLink();
+                }
+                if(ptLstTemp[j].id==prjBezierArr[i].endObj){
+                    lineTemp.setEndObj(ptLstTemp[j]);
+                    ptLstTemp[j].setLink(lineTemp);
+                    ptLstTemp[j].addLink();
+                }
+            }
+            if(lineTemp.getStartObj() && lineTemp.getEndObj()){
+                lineTemp.setDrawn(true);
+                lineTemp.setDrawing(true);
+                bezierArr.push(lineTemp);
+            }
+	    }
+    }
 }
 
 function reOrder(){

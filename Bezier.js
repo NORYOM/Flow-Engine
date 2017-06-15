@@ -42,8 +42,14 @@ function Bezier(canvas){
     this.isDrawing = function(){
     	return drag;
     };
+    this.setDrawing = function(flag){
+    	drag = flag;
+    };
     this.isDrawn = function(){
     	return startDraw;
+    };
+    this.setDrawn = function(flag){
+    	startDraw = flag;
     };
 
     this.onmousedown = function(e){
