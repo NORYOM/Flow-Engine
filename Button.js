@@ -9,6 +9,7 @@ function Button(canvas){
     this.colorOff = "#cccccc";
     this.colorMouseDown = "#dddddd";
     this.colorOn = "#eeeeee";
+    this.label = "测试";
 
     var buttonR = 5;
     var mouseOver = false;
@@ -93,7 +94,7 @@ function Button(canvas){
         ctx.fill();
         ctx.fill();
         ctx.fillStyle = '#222222';
-        ctx.fillText("测试",this.x-buttonR/4,this.y+buttonR*3/2);
+        ctx.fillText(this.label,this.x-buttonR/4,this.y+buttonR*3/2);
         ctx.closePath();
     };
 }

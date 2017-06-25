@@ -77,6 +77,8 @@ function showPrj(){
 	    }
 	}
 	prj.bezier = prjBezierArr;
+
+	console.log(JSON.stringify(prj));
 }
 
 function readPrj(){
