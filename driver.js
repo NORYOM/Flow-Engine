@@ -194,6 +194,52 @@ function removeBezierFromList(bezier){
 		}
 	}
 }
+function removeBlockFromList(block){
+	for(var i=0;i<objArr.length;i++){
+		if(block && block==objArr[i]){
+			objArr.splice(i,1);
+			break;
+		}
+	}
+    // in
+    for(var j=0;j<block.inPt.length;j++){
+        if(block.inPt[j]){
+            bezierTemp = block.inPt[j].getLink();
+            if(bezierTemp){
+                block.inPt[j].setLink(null);
+                block.inPt[j].removeLink();
+                (bezierTemp.getStartObj()).removeLink();
+                bezierTemp.setStartObj(null);
+                bezierTemp.setEndObj(null);
+                removeBezierFromList(bezierTemp);
+                bezierTemp = null;
+                break;
+            }
+        }
+    }
+    // out
+    for(var j=0;j<block.outPt.length;j++){
+        if(block.outPt[j]){
+            for(var i=0;i<bezierArr.length;i++){
+                if(block.outPt[j]==bezierArr[i].getStartObj()){
+                    bezierTemp = bezierArr[i];
+                    if(bezierTemp){
+                        block.outPt[j].setLink(null);
+                        block.outPt[j].removeLink();
+                        (bezierTemp.getEndObj()).setLink(null);
+                        (bezierTemp.getEndObj()).removeLink();
+                        bezierTemp.setStartObj(null);
+                        bezierTemp.setEndObj(null);
+                        removeBezierFromList(bezierTemp);
+                        bezierTemp = null;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    block = null;
+}
 var mouseCanDrag = false;
 function render(){
 	clear(30,40);
@@ -356,5 +402,8 @@ function render(){
 	// move block
 	for(var i=0;i<objArr.length;i++){
 		objArr[i].rend(ctx);
+        if(objArr[i].isClosed()){
+		    removeBlockFromList(objArr[i]);
+		}
 	}
 }
