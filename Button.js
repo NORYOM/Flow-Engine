@@ -73,6 +73,7 @@ function Button(canvas){
     this.rend = function(ctx){
         // refresh canvas bounding, incase scroll page
         cvsRect = canvas.getBoundingClientRect();
+        this.w = this.label.length*12;
 
         var btntColor = mouseDown?this.colorMouseDown:(mouseOver?this.colorOn:this.colorOff);
 
