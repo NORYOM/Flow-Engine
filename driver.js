@@ -47,6 +47,13 @@ function addDummyObj(){
 	objDummy.priority = objArr.length;
 	objArr.push(objDummy);
 }
+function addFileObj(){
+	var objFile = new BlockImgFile(theCanvas);
+	objFile.setX(100);
+	objFile.setY(100);
+	objFile.priority = objArr.length;
+	objArr.push(objFile);
+}
 function showPrj(){
 	var prj = {};
 
