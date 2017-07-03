@@ -1,6 +1,5 @@
 function Button(canvas){
     var cvs = canvas;
-    var ctx = canvas.getContext("2d");
     var cvsRect = canvas.getBoundingClientRect();
 
     this.x = 0;

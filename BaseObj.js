@@ -13,7 +13,6 @@ function BaseObj(canvas){
     var drag = false;
 
     var cvs = canvas;
-    var ctx = canvas.getContext("2d");
     this.cvsRect = canvas.getBoundingClientRect();
 
     this.setR = function(n){

@@ -5,7 +5,6 @@ function Bezier(canvas){
     var my;
     var drag = false;
     var cvs = canvas;
-    var ctx = canvas.getContext("2d");
     var cvsRect = canvas.getBoundingClientRect();
     var showControlPoint = false;
     var softControlPoint = true;

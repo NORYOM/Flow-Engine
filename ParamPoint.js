@@ -1,6 +1,5 @@
 function ParamPoint(canvas){
     var cvs = canvas;
-    var ctx = canvas.getContext("2d");
     var cvsRect = canvas.getBoundingClientRect();
 
     this.id = (new Date()).getTime()+Math.random();
