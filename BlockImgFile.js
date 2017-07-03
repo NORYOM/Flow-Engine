@@ -1,6 +1,6 @@
-function BlockImgFile(canvas){
-    Block.call(this, canvas);
-    this.parentType = new Block(canvas);
+function BlockImgFile(){
+    Block.call(this);
+    this.parentType = new Block();
     this.id = (new Date()).getTime()+Math.random();
     this.h=120;
     this.w=120;
@@ -10,10 +10,10 @@ function BlockImgFile(canvas){
     var img = new Image();
 
     this.inPt = [];
-    this.outPt = [new ParamPoint(canvas)];
-    var imageView = new ImageView(canvas);
+    this.outPt = [new ParamPoint()];
+    var imageView = new ImageView();
 
-    this.btnObj = new Button(canvas);
+    this.btnObj = new Button();
     this.btnObj.label = "选择文件";
     this.btnObj.doAction = function(){
         var fileLoader = document.getElementById("loadFile"+fileId);

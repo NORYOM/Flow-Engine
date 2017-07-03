@@ -1,4 +1,4 @@
-function Bezier(canvas){
+function Bezier(){
     var startX=0, startY=0;
     var startDraw = false;
     var mx;

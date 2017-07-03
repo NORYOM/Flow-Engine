@@ -10,14 +10,14 @@ var bezierArr = [];
 var mouseInPanel = 0;
 
 function initCanvas(canvasId,width,height){
-	theCanvas = document.getElementById(canvasId);
-	theCanvas.width = width + width/gridW;
-	theCanvas.height = height + height/gridW;
-	if(!theCanvas || !theCanvas.getContext){
+	canvas = document.getElementById(canvasId);
+	canvas.width = width + width/gridW;
+	canvas.height = height + height/gridW;
+	if(!canvas || !canvas.getContext){
 		alert("not support canvas");
 		return;
 	}
-	var context = theCanvas.getContext("2d");
+	var context = canvas.getContext("2d");
 	ctx = context;
 
 	cleanBgW = width;
@@ -26,29 +26,29 @@ function initCanvas(canvasId,width,height){
 }
 
 function addObj(){
-	//var objTemp = new BaseObj(theCanvas);
-	var objTemp = new Block(theCanvas);
+	//var objTemp = new BaseObj();
+	var objTemp = new Block();
 	objTemp.setX(100);
 	objTemp.setY(100);
 	objTemp.priority = objArr.length;
 	objArr.push(objTemp);
 }
 function addSwitchObj(){
-	var objSwitch = new BlockSwitch(theCanvas);
+	var objSwitch = new BlockSwitch();
 	objSwitch.setX(100);
 	objSwitch.setY(100);
 	objSwitch.priority = objArr.length;
 	objArr.push(objSwitch);
 }
 function addDummyObj(){
-	var objDummy = new BlockDummy(theCanvas);
+	var objDummy = new BlockDummy();
 	objDummy.setX(100);
 	objDummy.setY(100);
 	objDummy.priority = objArr.length;
 	objArr.push(objDummy);
 }
 function addFileObj(){
-	var objFile = new BlockImgFile(theCanvas);
+	var objFile = new BlockImgFile();
 	objFile.setX(100);
 	objFile.setY(100);
 	objFile.priority = objArr.length;
@@ -102,13 +102,13 @@ function readPrj(){
         if(prjObjArr[i]){
             var objTemp = null;
             if(prjObjArr[i].type=="Block"){
-                objTemp = new Block(theCanvas);
+                objTemp = new Block();
             }
             if(prjObjArr[i].type=="BlockSwitch"){
-                objTemp = new BlockSwitch(theCanvas);
+                objTemp = new BlockSwitch();
             }
             if(prjObjArr[i].type=="BlockDummy"){
-                objTemp = new BlockDummy(theCanvas);
+                objTemp = new BlockDummy();
             }
 
             objTemp.setX(prjObjArr[i].x);
@@ -119,7 +119,7 @@ function readPrj(){
             var inPtsTemp = [];
             if(prjObjArr[i].inPt){
                 for(var j=0;j<prjObjArr[i].inPt.length;j++){
-                    var ptTemp = new ParamPoint(theCanvas);
+                    var ptTemp = new ParamPoint();
                     ptTemp.id = prjObjArr[i].inPt[j].id;
                     ptTemp.x = prjObjArr[i].inPt[j].x;
                     ptTemp.y = prjObjArr[i].inPt[j].y;
@@ -132,7 +132,7 @@ function readPrj(){
             var outPtsTemp = [];
             if(prjObjArr[i].outPt){
                 for(var j=0;j<prjObjArr[i].outPt.length;j++){
-                    var ptTemp = new ParamPoint(theCanvas);
+                    var ptTemp = new ParamPoint();
                     ptTemp.id = prjObjArr[i].outPt[j].id;
                     ptTemp.x = prjObjArr[i].outPt[j].x;
                     ptTemp.y = prjObjArr[i].outPt[j].y;
@@ -153,7 +153,7 @@ function readPrj(){
     bezierArr = [];
     for(var i=0;i<prjBezierArr.length;i++){
         if(prjBezierArr[i]){
-            var lineTemp = new Bezier(theCanvas);
+            var lineTemp = new Bezier();
             for(var j=0;j<ptLstTemp.length;j++){
                 if(ptLstTemp[j].id==prjBezierArr[i].startObj){
                     lineTemp.setStartObj(ptLstTemp[j]);
@@ -252,7 +252,7 @@ function render(){
 	clear(30,40);
 	drawGrid(ctx,30,40);
 
-	theCanvas.onmousedown = function(e){
+	canvas.onmousedown = function(e){
 		mouseInPanel = 0;
 		// for block
 		//for showing order, high priority will render first
@@ -269,7 +269,7 @@ function render(){
 
     	// for bezier
     	/*if(mouseInPanel==0){//mouse not in panel or on point can draw bezier, ONLY DEBUG
-	    	bezierTemp = new Bezier(theCanvas);
+	    	bezierTemp = new Bezier();
 	    	bezierTemp.startBezier(true);
 	    	bezierTemp.onmousedown(e);
     	}*/
@@ -295,7 +295,7 @@ function render(){
     		// out
     		for(var j=0;j<objArr[i].outPt.length;j++){
 	    		if(objArr[i].outPt[j].isOutStart()){
-	    			bezierTemp = new Bezier(theCanvas);
+	    			bezierTemp = new Bezier();
 	    			objArr[i].outPt[j].addLink();
 	    			bezierTemp.setStartObj(objArr[i].outPt[j]);
 	    			bezierTemp.startBezier(true);
@@ -317,10 +317,10 @@ function render(){
 
 		mouseCanDrag = true;
 	};
-	theCanvas.onmouseup = function(e){
+	canvas.onmouseup = function(e){
 		mouseCanDrag = false;
-		theCanvas.onmousedown = null;
-		theCanvas.onmousemove = null;
+		canvas.onmousedown = null;
+		canvas.onmousemove = null;
 		objExclusiveLock = false;
     	for(var i=0;i<objArr.length;i++){
     		objArr[i].onmouseup(e);
@@ -363,7 +363,7 @@ function render(){
 		}
 	};
 
-	theCanvas.onmousemove = function (e){
+	canvas.onmousemove = function (e){
         var e = e || window.event;
 
         // move on block

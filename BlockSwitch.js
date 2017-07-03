@@ -1,15 +1,15 @@
-function BlockSwitch(canvas){
-    Block.call(this, canvas);
-    this.parentType = new Block(canvas);
+function BlockSwitch(){
+    Block.call(this);
+    this.parentType = new Block();
     this.id = (new Date()).getTime()+Math.random();
     this.h=70;
     this.w=150;
     this.title="Switch";
     this.titleColor = 'rgba(80,0,0,0.5)';
 
-    this.inPt = [new ParamPoint(canvas)];
-    this.outPt = [new ParamPoint(canvas),new ParamPoint(canvas),new ParamPoint(canvas)];
-    this.btnObj = new Button(canvas);
+    this.inPt = [new ParamPoint()];
+    this.outPt = [new ParamPoint(),new ParamPoint(),new ParamPoint()];
+    this.btnObj = new Button();
     this.btnObj.doAction = function(){
         console.log("button down");
     };

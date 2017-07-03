@@ -1,4 +1,4 @@
-function Button(canvas){
+function Button(){
     var cvs = canvas;
     var cvsRect = canvas.getBoundingClientRect();
 

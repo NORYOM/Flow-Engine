@@ -1,4 +1,4 @@
-function ParamPoint(canvas){
+function ParamPoint(){
     var cvs = canvas;
     var cvsRect = canvas.getBoundingClientRect();
 

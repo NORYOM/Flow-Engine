@@ -1,4 +1,4 @@
-function BaseObj(canvas){
+function BaseObj(){
     this.r = 20;
     this.w = 100;
     this.h = 50;
