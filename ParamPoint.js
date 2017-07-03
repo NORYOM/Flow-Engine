@@ -1,5 +1,6 @@
 function ParamPoint(canvas){
     var cvs = canvas;
+    var ctx = canvas.getContext("2d");
     var cvsRect = canvas.getBoundingClientRect();
 
     this.id = (new Date()).getTime()+Math.random();
@@ -98,11 +99,13 @@ function ParamPoint(canvas){
         }
     };
 
-    this.rend = function(ctx){
+    this.rend = function(){
         // refresh canvas bounding, incase scroll page
         cvsRect = canvas.getBoundingClientRect();
         var ptColor = mouseDrag?(lnkNum?(readyForLink?colorOccupied:colorOn):(readyForLink?colorReday:colorOff)):(lnkNum?colorOn:colorOff);
         ptColor = mouseDown?colorMouseDown:ptColor;
+
+        ctx.save();
 
         ctx.beginPath();
         ctx.arc(this.x, this.y, parameterPointR, (Math.PI/180)*0, (Math.PI/180)*360, false);
@@ -112,6 +115,8 @@ function ParamPoint(canvas){
         ctx.fillStyle=ptColor;
         ctx.fill();
         ctx.closePath();
+
+        ctx.restore();
     };
 }
 

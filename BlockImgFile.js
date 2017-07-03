@@ -63,15 +63,15 @@ function BlockImgFile(canvas){
         this.btnObj.onmousemove(e);
     };
 
-    this.rend = function(ctx){
-        this.parentType.rend.call(this,ctx);
+    this.rend = function(){
+        this.parentType.rend.call(this);
         // button
         this.btnObj.setPos(this.x+this.r*5/4,this.y+this.r/2);
-        this.btnObj.rend(ctx);
+        this.btnObj.rend();
 
         // image view
         imageView.setPos(this.x+this.w/2-imageView.getW()/2,this.y+this.r/2+this.h/2-imageView.getH()/2);
-        imageView.rend(ctx);
+        imageView.rend();
     };
 }
 

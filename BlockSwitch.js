@@ -42,11 +42,11 @@ function BlockSwitch(canvas){
         this.btnObj.onmousemove(e);
     };
 
-    this.rend = function(ctx){
-        this.parentType.rend.call(this,ctx);
+    this.rend = function(){
+        this.parentType.rend.call(this);
         // button
         this.btnObj.setPos(this.x+this.w-this.r,this.y+this.r/2);
-        this.btnObj.rend(ctx);
+        this.btnObj.rend();
     };
 }
 

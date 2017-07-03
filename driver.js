@@ -392,13 +392,13 @@ function render(){
 
 	// for bezier
 	if(bezierTemp){
-		bezierTemp.rend(ctx);
+		bezierTemp.rend();
 	}
 	for(var i=0;i<bezierArr.length;i++){
 		if(bezierTemp && bezierTemp==bezierArr[i]){
 			continue;// already drawn, no need draw again
 		}
-		bezierArr[i].rend(ctx);
+		bezierArr[i].rend();
 
 		// transfer value from outPt to inPt
 		if(bezierArr[i].getStartObj() && bezierArr[i].getEndObj()){
@@ -408,7 +408,7 @@ function render(){
 
 	// move block
 	for(var i=0;i<objArr.length;i++){
-		objArr[i].rend(ctx);
+		objArr[i].rend();
         if(objArr[i].isClosed()){
 		    removeBlockFromList(objArr[i]);
 		}

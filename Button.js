@@ -1,5 +1,6 @@
 function Button(canvas){
     var cvs = canvas;
+    var ctx = canvas.getContext("2d");
     var cvsRect = canvas.getBoundingClientRect();
 
     this.x = 0;
@@ -70,12 +71,14 @@ function Button(canvas){
 
     };
 
-    this.rend = function(ctx){
+    this.rend = function(){
         // refresh canvas bounding, incase scroll page
         cvsRect = canvas.getBoundingClientRect();
         this.w = this.label.length*12;
 
         var btntColor = mouseDown?this.colorMouseDown:(mouseOver?this.colorOn:this.colorOff);
+
+        ctx.save();
 
         ctx.beginPath();
 
@@ -97,6 +100,8 @@ function Button(canvas){
         ctx.fillStyle = '#222222';
         ctx.fillText(this.label,this.x-buttonR/4,this.y+buttonR*3/2);
         ctx.closePath();
+
+        ctx.restore();
     };
 }
 

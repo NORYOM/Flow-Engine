@@ -13,6 +13,7 @@ function BaseObj(canvas){
     var drag = false;
 
     var cvs = canvas;
+    var ctx = canvas.getContext("2d");
     this.cvsRect = canvas.getBoundingClientRect();
 
     this.setR = function(n){
@@ -76,7 +77,7 @@ function BaseObj(canvas){
     this.onmousemove = function(e){
     };
 
-    this.rend = function(ctx){
+    this.rend = function(){
         // refresh canvas bounding, incase scroll page
         this.cvsRect = canvas.getBoundingClientRect();
         // base shape

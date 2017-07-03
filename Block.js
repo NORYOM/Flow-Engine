@@ -51,24 +51,24 @@ function Block(canvas){
         return closed;
     };
 
-    this.rend = function(ctx){
-        this.prototype.rend.call(this,ctx);
+    this.rend = function(){
+        this.prototype.rend.call(this);
 
         // in
         for(var i=0;i<this.inPt.length;i++){
             this.inPt[i].setPos(this.x-this.r,this.y+this.r+this.r*i);
-            this.inPt[i].rend(ctx);
+            this.inPt[i].rend();
         }
 
         // out
         for(var i=0;i<this.outPt.length;i++){
             this.outPt[i].setPos(this.x+this.w+this.r,this.y+this.h-this.r*i);
-            this.outPt[i].rend(ctx);
+            this.outPt[i].rend();
         }
 
         // close button
         this.btnClose.setPos(this.x,this.y+this.h);
-        this.btnClose.rend(ctx);
+        this.btnClose.rend();
     };
 }
 

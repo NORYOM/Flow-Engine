@@ -5,6 +5,7 @@ function Bezier(canvas){
     var my;
     var drag = false;
     var cvs = canvas;
+    var ctx = canvas.getContext("2d");
     var cvsRect = canvas.getBoundingClientRect();
     var showControlPoint = false;
     var softControlPoint = true;
@@ -73,7 +74,7 @@ function Bezier(canvas){
     this.onmousemove = function(e){
     };
 
-    this.rend = function(ctx){
+    this.rend = function(){
         // refresh canvas bounding, incase scroll page
         cvsRect = canvas.getBoundingClientRect();
 

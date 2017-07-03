@@ -1,4 +1,5 @@
 function ImageView(canvas){
+    var ctx = canvas.getContext("2d");
     this.x = 0;
     this.y = 0;
     this.img = null;
@@ -41,12 +42,14 @@ function ImageView(canvas){
         }
     };
 
-    this.rend = function(ctx){
+    this.rend = function(){
         if(this.img){
+            ctx.save();
             ctx.drawImage(this.img, this.x, this.y, w, h);
             if(!this.imgData){
                 this.imgData = ctx.getImageData(this.x, this.y, w, h);
             }
+            ctx.restore();
         }
     };
 }
