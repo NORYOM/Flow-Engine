@@ -19,10 +19,10 @@ function BlockImgView(){
         // init image from input
         if(this.inPt[0].value){
             imageView.showImg(this.inPt[0].value,this.w*1.5,this.h*1.5);
-            this.outPt[0].value = this.inPt[0].value
         }else{
             imageView.clearImg();
         }
+        this.outPt[0].value = this.inPt[0].value;
 
         // image view
         imageView.setPos(this.x+this.w/2-imageView.getW()/2,this.y+this.h/2-imageView.getH()/2);
