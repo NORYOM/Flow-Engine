@@ -28,6 +28,7 @@ function BlockImgFile(){
                 img.src = event.target.result;
                 img.onload = function(){
                     imageView.initImg(img,borderW,borderH);
+                    tempImgData = imageView.getImg();
                 };
             };
             reader.readAsDataURL(event.target.files[0]);
@@ -42,6 +43,7 @@ function BlockImgFile(){
      var fileId = this.id;
      var borderW = this.w;
      var borderH = this.h;
+     var tempImgData = null;
      fileLayer.innerHTML = "<input type='file' id='loadFile"+fileId+"' hidden='true' accept='image/*'>";
      ///////// debug to see img
      //fileLayer.innerHTML += "<img id='loadedImg'>";
@@ -72,6 +74,9 @@ function BlockImgFile(){
         // image view
         imageView.setPos(this.x+this.w/2-imageView.getW()/2,this.y+this.r/2+this.h/2-imageView.getH()/2);
         imageView.rend();
+        if(tempImgData){
+            this.outPt[0].value = tempImgData;
+        }
     };
 }
 

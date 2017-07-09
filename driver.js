@@ -54,6 +54,13 @@ function addFileObj(){
 	objFile.priority = objArr.length;
 	objArr.push(objFile);
 }
+function addViewObj(){
+	var objView = new BlockImgView();
+	objView.setX(100);
+	objView.setY(100);
+	objView.priority = objArr.length;
+	objArr.push(objView);
+}
 function showPrj(){
 	var prj = {};
 
@@ -113,6 +120,9 @@ function readPrj(){
             }
             if(prjObjArr[i].type=="BlockImgFile"){
                 objTemp = new BlockImgFile();
+            }
+            if(prjObjArr[i].type=="BlockImgView"){
+                objTemp = new BlockImgView();
             }
 
             objTemp.setX(prjObjArr[i].x);
@@ -219,7 +229,9 @@ function removeBlockFromList(block){
             if(bezierTemp){
                 block.inPt[j].setLink(null);
                 block.inPt[j].removeLink();
+                block.inPt[j].value = null;
                 (bezierTemp.getStartObj()).removeLink();
+                (bezierTemp.getStartObj()).value = null;
                 bezierTemp.setStartObj(null);
                 bezierTemp.setEndObj(null);
                 removeBezierFromList(bezierTemp);
@@ -237,8 +249,10 @@ function removeBlockFromList(block){
                     if(bezierTemp){
                         block.outPt[j].setLink(null);
                         block.outPt[j].removeLink();
+                        block.outPt[j].value = null;
                         (bezierTemp.getEndObj()).setLink(null);
                         (bezierTemp.getEndObj()).removeLink();
+                        (bezierTemp.getEndObj()).value = null;
                         bezierTemp.setStartObj(null);
                         bezierTemp.setEndObj(null);
                         removeBezierFromList(bezierTemp);
@@ -315,6 +329,7 @@ function render(){
 			if(bezierStarted){
 	    		for(var k=0;k<objArr[i].inPt.length;k++){
 		    		objArr[i].inPt[k].readyForLink();
+		    		objArr[i].inPt[k].value = null;
 	    		}
 			}
 		}

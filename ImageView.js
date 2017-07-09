@@ -2,7 +2,6 @@ function ImageView(){
     this.x = 0;
     this.y = 0;
     this.img = null;
-    this.imgData = null;
 
     var w = 10;
     var h = 10;
@@ -25,10 +24,15 @@ function ImageView(){
     };
     this.initImg = function(imgObj, borderW, borderH){
         this.img = imgObj;
-
         w = this.img.width;
         h = this.img.height;
-        if(w>h){
+        this.calculateImgSize(borderW,borderH);
+    };
+    this.getImg = function(){
+        return this.img;
+    };
+    this.calculateImgSize = function(borderW,borderH){
+       if(w>h){
             while(w>=borderW*0.7){
                 w *= 0.9;
                 h *= 0.9;
@@ -40,14 +44,20 @@ function ImageView(){
             }
         }
     };
+    this.showImg = function(imgObj, borderW, borderH){
+        this.img = imgObj;
+        w = imgObj.width;
+        h = imgObj.height;
+        this.calculateImgSize(borderW,borderH);
+    };
+    this.clearImg = function(){
+        this.img = null;
+    };
 
     this.rend = function(){
-        if(this.img){
+        if(this.img && this.img.width){// 'this.img.width' make sure the img is an image can be drawn
             ctx.save();
             ctx.drawImage(this.img, this.x, this.y, w, h);
-            if(!this.imgData){
-                this.imgData = ctx.getImageData(this.x, this.y, w, h);
-            }
             ctx.restore();
         }
     };
