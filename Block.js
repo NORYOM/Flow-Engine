@@ -5,6 +5,7 @@ function Block(){
     this.h=100;
     var closed = false;
 
+    this.config = {};//save properties of block like settings, value and so on
     this.inPt = [new ParamPoint(),new ParamPoint()];
     this.outPt = [new ParamPoint(),new ParamPoint()];
     this.btnClose = new Button();

@@ -11,6 +11,7 @@ function Button(){
     this.colorOn = "#eeeeee";
     this.label = "测试";
 
+    var labelW = 0;// length of label characters
     var buttonR = 5;
     var mouseOver = false;
     var mouseDown = false;
@@ -34,6 +35,20 @@ function Button(){
     this.getR = function(x,y){
         return buttonR;
     };
+
+    this.getLabelLength = function(){
+        var realLength = 0;
+        for (var i = 0; i < this.label.length; i++)
+        {
+            charCode = this.label.charCodeAt(i);
+            if (charCode >= 0 && charCode <= 128)
+            realLength += 1;
+            else
+            realLength += 2;
+        }
+        labelW = realLength*6;
+        return labelW;
+    }
 
     this.isInBtnArea = function(mx,my){
         var cx = mx-this.getCVSRect().left*(this.getCVS().width/this.getCVSRect().width);
@@ -73,7 +88,7 @@ function Button(){
     this.rend = function(){
         // refresh canvas bounding, incase scroll page
         cvsRect = canvas.getBoundingClientRect();
-        this.w = this.label.length*12;
+        this.w = this.getLabelLength();
 
         var btntColor = mouseDown?this.colorMouseDown:(mouseOver?this.colorOn:this.colorOff);
 
@@ -97,7 +112,7 @@ function Button(){
         ctx.fill();
         ctx.fill();
         ctx.fillStyle = '#222222';
-        ctx.fillText(this.label,this.x-buttonR/4,this.y+buttonR*3/2);
+        ctx.fillText(this.label,this.x,this.y+buttonR*3/2);
         ctx.closePath();
 
         ctx.restore();

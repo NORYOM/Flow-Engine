@@ -68,6 +68,7 @@ function showPrj(){
             prjObj.priority = objArr[i].priority;
             prjObj.inPt = objArr[i].inPt;
             prjObj.outPt = objArr[i].outPt;
+            prjObj.config = objArr[i].config;
             prjObjArr.push(prjObj);
 	    }
 	}
@@ -109,6 +110,9 @@ function readPrj(){
             }
             if(prjObjArr[i].type=="BlockDummy"){
                 objTemp = new BlockDummy();
+            }
+            if(prjObjArr[i].type=="BlockImgFile"){
+                objTemp = new BlockImgFile();
             }
 
             objTemp.setX(prjObjArr[i].x);
