@@ -64,6 +64,11 @@ function BlockImgFile(){
         this.parentType.onmousemove.call(this,e);
         this.btnObj.onmousemove(e);
     };
+    this.doAction = function(){
+        if(tempImgData){
+            this.outPt[0].value = tempImgData;
+        }
+    };
 
     this.rend = function(){
         this.parentType.rend.call(this);
@@ -74,9 +79,6 @@ function BlockImgFile(){
         // image view
         imageView.setPos(this.x+this.w/2-imageView.getW()/2,this.y+this.r/2+this.h/2-imageView.getH()/2);
         imageView.rend();
-        if(tempImgData){
-            this.outPt[0].value = tempImgData;
-        }
     };
 }
 

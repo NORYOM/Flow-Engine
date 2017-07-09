@@ -70,6 +70,9 @@ function Block(){
         // close button
         this.btnClose.setPos(this.x,this.y+this.h);
         this.btnClose.rend();
+
+        // run what the block should do
+        this.doAction();
     };
 }
 

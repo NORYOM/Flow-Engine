@@ -4,7 +4,7 @@ function BlockImgView(){
     this.id = (new Date()).getTime()+Math.random();
     this.h=120;
     this.w=120;
-    this.title="Image View";
+    this.title="预览";
     this.titleColor = 'rgba(0,0,180,0.5)';
 
     var img = new Image();
@@ -12,6 +12,10 @@ function BlockImgView(){
     this.inPt = [new ParamPoint()];
     this.outPt = [new ParamPoint()];
     var imageView = new ImageView();
+
+    this.doAction = function(){
+        this.outPt[0].value = this.inPt[0].value;
+    };
 
     this.rend = function(){
         this.parentType.rend.call(this);
@@ -22,7 +26,6 @@ function BlockImgView(){
         }else{
             imageView.clearImg();
         }
-        this.outPt[0].value = this.inPt[0].value;
 
         // image view
         imageView.setPos(this.x+this.w/2-imageView.getW()/2,this.y+this.h/2-imageView.getH()/2);
