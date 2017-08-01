@@ -31,7 +31,9 @@ function BlockImgFile(){
                     tempImgData = imageView.getImg();
                 };
             };
-            reader.readAsDataURL(event.target.files[0]);
+            if(event.target.files[0]){
+                reader.readAsDataURL(event.target.files[0]);
+            }
         };
         // open dialog for choose file
         fileLoader.click();

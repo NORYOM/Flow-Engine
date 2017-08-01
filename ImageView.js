@@ -5,6 +5,8 @@ function ImageView(){
 
     var w = 10;
     var h = 10;
+    var clnCvs;
+    var rec;
 
     this.setX = function(n){
         this.x = n;
@@ -31,6 +33,22 @@ function ImageView(){
     this.getImg = function(){
         return this.img;
     };
+    this.getImgClone = function(img,borderW,borderH){
+        var clnImg = new Image();
+        clnCvs = document.getElementById("clnCvs");
+        if(!clnCvs){
+            clnCvs = document.createElement("canvas");
+            clnCvs.id = "clnCvs";
+        }
+        w = img.width;
+        h = img.height;
+        rec = this.calculateImgSize(borderW,borderH);
+        clnCvs.width = rec.width;
+        clnCvs.height = rec.height;
+        clnCvs.getContext("2d").drawImage(img,0,0,rec.width,rec.height);
+        clnImg.src = clnCvs.toDataURL("image/png");
+        return clnImg;
+    };
     this.calculateImgSize = function(borderW,borderH){
        if(w>h){
             while(w>=borderW*0.7){
@@ -43,12 +61,7 @@ function ImageView(){
                 h *= 0.9;
             }
         }
-    };
-    this.showImg = function(imgObj, borderW, borderH){
-        this.img = imgObj;
-        w = imgObj.width;
-        h = imgObj.height;
-        this.calculateImgSize(borderW,borderH);
+        return {width:w,height:h};
     };
     this.clearImg = function(){
         this.img = null;

@@ -61,6 +61,13 @@ function addViewObj(){
 	objView.priority = objArr.length;
 	objArr.push(objView);
 }
+function addEFObj(){
+	var objEF = new BlockImgEF();
+	objEF.setX(100);
+	objEF.setY(100);
+	objEF.priority = objArr.length;
+	objArr.push(objEF);
+}
 function showPrj(){
 	var prj = {};
 

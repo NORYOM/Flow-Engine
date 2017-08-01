@@ -22,7 +22,7 @@ function BlockImgView(){
 
         // init image from input
         if(this.inPt[0].value){
-            imageView.showImg(this.inPt[0].value,this.w*1.5,this.h*1.5);
+            imageView.initImg(this.inPt[0].value,this.w*1.5,this.h*1.5);
         }else{
             imageView.clearImg();
         }
