@@ -238,7 +238,6 @@ function removeBlockFromList(block){
                 block.inPt[j].removeLink();
                 block.inPt[j].value = null;
                 (bezierTemp.getStartObj()).removeLink();
-                (bezierTemp.getStartObj()).value = null;
                 bezierTemp.setStartObj(null);
                 bezierTemp.setEndObj(null);
                 removeBezierFromList(bezierTemp);
@@ -254,9 +253,9 @@ function removeBlockFromList(block){
                 if(block.outPt[j]==bezierArr[i].getStartObj()){
                     bezierTemp = bezierArr[i];
                     if(bezierTemp){
-                        block.outPt[j].setLink(null);
-                        block.outPt[j].removeLink();
-                        block.outPt[j].value = null;
+                        (bezierTemp.getStartObj()).setLink(null);
+                        (bezierTemp.getStartObj()).removeLink();
+                        (bezierTemp.getStartObj()).value = null;
                         (bezierTemp.getEndObj()).setLink(null);
                         (bezierTemp.getEndObj()).removeLink();
                         (bezierTemp.getEndObj()).value = null;
@@ -264,7 +263,7 @@ function removeBlockFromList(block){
                         bezierTemp.setEndObj(null);
                         removeBezierFromList(bezierTemp);
                         bezierTemp = null;
-                        break;
+                        i--;
                     }
                 }
             }
