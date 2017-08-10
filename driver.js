@@ -68,6 +68,13 @@ function addEFObj(){
 	objEF.priority = objArr.length;
 	objArr.push(objEF);
 }
+//--------------debug diginum
+var temDG = new DigiNum();
+temDG.x = 200;
+temDG.y = 200;
+var timer = 0;
+var counter = 0;
+//---------------debug diginum
 function showPrj(){
 	var prj = {};
 
@@ -438,4 +445,27 @@ function render(){
 		    removeBlockFromList(objArr[i]);
 		}
 	}
+//--------------debug diginum
+	timer++;
+	if(timer>60){
+	    timer = 0;
+	    counter++;
+	    if(counter>9){
+	        counter = 0;
+	    }
+	    switch(counter){
+	        case 0:temDG.num = 0;break;
+	        case 1:temDG.num = 1;break;
+	        case 2:temDG.num = 2;break;
+	        case 3:temDG.num = 3;break;
+	        case 4:temDG.num = 4;break;
+	        case 5:temDG.num = 5;break;
+	        case 6:temDG.num = 6;break;
+	        case 7:temDG.num = 7;break;
+	        case 8:temDG.num = 8;break;
+	        case 9:temDG.num = 9;break;
+	    }
+	}
+	temDG.rend();
+//--------------debug diginum
 }
