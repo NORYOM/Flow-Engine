@@ -1,13 +1,24 @@
 function DigiNum(){
-//    Block.call(this);
     this.x = 0;
     this.y = 0;
     this.recLen = 10;
     this.triH = 2;
     this.triW = 2;
-    this.colorBorder = "#000000";
+    this.colorBorder = "#444444";
     this.colorOff = "#888888";
     this.colorOn = "#ff9966";
+
+    var num;
+
+    this.setNum = function(n){
+        num = n;
+    }
+    this.test = function(){
+        num = 'test';
+    }
+    this.shut = function(){
+        num = null;
+    }
 
     this.drawHorizon = function(x,y,c){
         ctx.save();
@@ -162,23 +173,25 @@ function DigiNum(){
         this.drawVertical(this.x+this.triH*2+this.recLen, this.y+this.triH*2+this.recLen, this.colorOn);//g
     };
 
-    this.num = 0;
-    this.drawNum = function(){
-	    switch(this.num){
-	        case 0:temDG.draw0();break;
-	        case 1:temDG.draw1();break;
-	        case 2:temDG.draw2();break;
-	        case 3:temDG.draw3();break;
-	        case 4:temDG.draw4();break;
-	        case 5:temDG.draw5();break;
-	        case 6:temDG.draw6();break;
-	        case 7:temDG.draw7();break;
-	        case 8:temDG.draw8();break;
-	        case 9:temDG.draw9();break;
-	    }
-    };
     this.rend = function(){
-        this.drawNum();
+        if(num==null){
+            temDG.drawOff();
+        }else if(num=='test'){
+            temDG.drawOn();
+        }else{
+            switch(num){
+                case 0:temDG.draw0();break;
+                case 1:temDG.draw1();break;
+                case 2:temDG.draw2();break;
+                case 3:temDG.draw3();break;
+                case 4:temDG.draw4();break;
+                case 5:temDG.draw5();break;
+                case 6:temDG.draw6();break;
+                case 7:temDG.draw7();break;
+                case 8:temDG.draw8();break;
+                case 9:temDG.draw9();break;
+            }
+        }
     };
 }
 
