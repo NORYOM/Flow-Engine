@@ -142,6 +142,9 @@ function readPrj(){
             if(prjObjArr[i].type=="BlockImgView"){
                 objTemp = new BlockImgView();
             }
+            if(prjObjArr[i].type=="BlockImgEF"){
+                objTemp = new BlockImgEF();
+            }
 
             objTemp.setX(prjObjArr[i].x);
             objTemp.setY(prjObjArr[i].y);
@@ -284,8 +287,8 @@ function removeBlockFromList(block){
 }
 var mouseCanDrag = false;
 function render(){
-	clear(30,40);
-	drawGrid(ctx,30,40);
+	clear(60,80);
+	drawGrid(ctx,60,80);
 
 	canvas.onmousedown = function(e){
 		mouseInPanel = 0;
