@@ -35,7 +35,6 @@ function ImageView(){
     };
     this.getImgClone = function(img,borderW,borderH){
         var clnImg = new Image();
-        clnCvs = document.getElementById("clnCvs");
         if(!clnCvs){
             clnCvs = document.createElement("canvas");
             clnCvs.id = "clnCvs";

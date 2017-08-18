@@ -22,6 +22,146 @@ function initCanvas(canvasId,width,height){
 
 	cleanBgW = width;
 	cleanBgH = height;
+
+	canvas.onmousedown = function(e){
+		mouseInPanel = 0;
+		// for block
+		//for showing order, high priority will render first
+    	for(var i=objArr.length-1;i>=0;i--){
+    		if(!objExclusiveLock && objArr[i].isInArea(e.clientX,e.clientY)){
+				objArr[i].onmousedown(e);
+				objExclusiveLock = true;
+    		}
+    		mouseInPanel += objArr[i].isInArea(e.clientX,e.clientY)?1:0;
+    		objArr[i].onmousedownOutPt(e);
+    	}
+    	//reorder showing order, high priority will render first
+    	reOrder();
+
+    	// for bezier
+    	/*if(mouseInPanel==0){//mouse not in panel or on point can draw bezier, ONLY DEBUG
+	    	bezierTemp = new Bezier();
+	    	bezierTemp.startBezier(true);
+	    	bezierTemp.onmousedown(e);
+    	}*/
+
+    	var bezierStarted = false;// check if start draw bezier to show color of inPoint when mouse over
+    	for(var i=0;i<objArr.length;i++){
+    		// in
+    		for(var j=0;j<objArr[i].inPt.length;j++){
+	    		if(objArr[i].inPt[j].isInParamPos(e.clientX,e.clientY)){
+	    			bezierTemp = objArr[i].inPt[j].getLink();
+	    			if(bezierTemp){
+	    				objArr[i].inPt[j].setLink(null);
+		    			objArr[i].inPt[j].removeLink();
+		    			bezierTemp.setEndObj(null);
+		    			bezierTemp.setStart(bezierTemp.getStart().x,bezierTemp.getStart().y);
+		    			bezierTemp.startBezier(true);
+		    			removeBezierFromList(bezierTemp);
+		    			bezierStarted = true;
+		    			break;
+	    			}
+	    		}
+    		}
+    		// out
+    		for(var j=0;j<objArr[i].outPt.length;j++){
+	    		if(objArr[i].outPt[j].isOutStart()){
+	    			bezierTemp = new Bezier();
+	    			objArr[i].outPt[j].addLink();
+	    			bezierTemp.setStartObj(objArr[i].outPt[j]);
+	    			bezierTemp.startBezier(true);
+	    			bezierTemp.onmousedown(e);
+	    			bezierStarted = true;
+	    			break;
+	    		}
+    		}
+    	}
+
+    	// all in point ready for link(show color when mouse over)
+		for(var i=0;i<objArr.length;i++){
+			if(bezierStarted){
+	    		for(var k=0;k<objArr[i].inPt.length;k++){
+		    		objArr[i].inPt[k].readyForLink();
+		    		objArr[i].inPt[k].value = null;
+	    		}
+			}
+		}
+
+		mouseCanDrag = true;
+	};
+	canvas.onmouseup = function(e){
+		mouseCanDrag = false;
+//		canvas.onmousedown = null;
+//		canvas.onmousemove = null;
+		objExclusiveLock = false;
+    	for(var i=0;i<objArr.length;i++){
+    		objArr[i].onmouseup(e);
+    		// in
+    		for(var j=0;j<objArr[i].inPt.length;j++){
+    			objArr[i].inPt[j].holdForLink();
+	    		if(objArr[i].inPt[j].isInParamPos(e.clientX,e.clientY)){
+	    			if(bezierTemp){
+	    				if(!objArr[i].inPt[j].getLink()){
+		    				bezierTemp.setEndObj(objArr[i].inPt[j]);
+		    				objArr[i].inPt[j].setLink(bezierTemp);
+		    				objArr[i].inPt[j].addLink();
+	    				}else{
+	    					console.log("already occupied!");
+	    				}
+	    			}
+	    		}
+    		}
+    	}
+		if(bezierTemp){
+			if(!bezierTemp.getEndObj()){
+				// if bezier has no end point, remove start point
+				(bezierTemp.getStartObj()).removeLink();
+				bezierTemp.setStartObj(null);
+				bezierTemp = null;
+			}else{
+				var existed = false;
+				for(var i=0;i<bezierArr.length;i++){
+					if(bezierTemp==bezierArr[i]){
+						existed = true;
+						bezierTemp = null;
+						break;
+					}
+				}
+				if(!existed){
+					bezierArr.push(bezierTemp);
+					bezierTemp = null;
+				}
+			}
+		}
+	};
+
+	canvas.onmousemove = function (e){
+        var e = e || window.event;
+
+        // move on block
+    	for(var i=0;i<objArr.length;i++){
+    		objArr[i].onmousemove(e);
+    	}
+
+	    // for bezier
+	    if(bezierTemp){
+	    	bezierTemp.onmousemove(e);
+	    }
+
+		// for drag
+	    if(mouseCanDrag){
+	        // move block
+	    	for(var i=0;i<objArr.length;i++){
+	    		objArr[i].onmousemovewhendown(e);
+	    	}
+
+		    // for bezier
+		    if(bezierTemp){
+		    	bezierTemp.onmousemovewhendown(e);
+		    }
+	    }
+    };
+
 	setInterval(render,1000/fps);
 }
 
@@ -225,6 +365,7 @@ function reOrder(){
 
 var bezierTemp;
 function clear(w,h){
+    ctx.clearRect(0,0,cleanBgW+gridW+w,cleanBgH+gridW+h);
 	ctx.fillStyle = "#777777";
 	ctx.fillRect(0,0,cleanBgW+gridW+w,cleanBgH+gridW+h);
 }
@@ -290,144 +431,144 @@ function render(){
 	clear(60,80);
 	drawGrid(ctx,60,80);
 
-	canvas.onmousedown = function(e){
-		mouseInPanel = 0;
-		// for block
-		//for showing order, high priority will render first
-    	for(var i=objArr.length-1;i>=0;i--){
-    		if(!objExclusiveLock && objArr[i].isInArea(e.clientX,e.clientY)){
-				objArr[i].onmousedown(e);
-				objExclusiveLock = true;
-    		}
-    		mouseInPanel += objArr[i].isInArea(e.clientX,e.clientY)?1:0;
-    		objArr[i].onmousedownOutPt(e);
-    	}
-    	//reorder showing order, high priority will render first
-    	reOrder();
-
-    	// for bezier
-    	/*if(mouseInPanel==0){//mouse not in panel or on point can draw bezier, ONLY DEBUG
-	    	bezierTemp = new Bezier();
-	    	bezierTemp.startBezier(true);
-	    	bezierTemp.onmousedown(e);
-    	}*/
-
-    	var bezierStarted = false;// check if start draw bezier to show color of inPoint when mouse over
-    	for(var i=0;i<objArr.length;i++){
-    		// in
-    		for(var j=0;j<objArr[i].inPt.length;j++){
-	    		if(objArr[i].inPt[j].isInParamPos(e.clientX,e.clientY)){
-	    			bezierTemp = objArr[i].inPt[j].getLink();
-	    			if(bezierTemp){
-	    				objArr[i].inPt[j].setLink(null);
-		    			objArr[i].inPt[j].removeLink();
-		    			bezierTemp.setEndObj(null);
-		    			bezierTemp.setStart(bezierTemp.getStart().x,bezierTemp.getStart().y);
-		    			bezierTemp.startBezier(true);
-		    			removeBezierFromList(bezierTemp);
-		    			bezierStarted = true;
-		    			break;
-	    			}
-	    		}
-    		}
-    		// out
-    		for(var j=0;j<objArr[i].outPt.length;j++){
-	    		if(objArr[i].outPt[j].isOutStart()){
-	    			bezierTemp = new Bezier();
-	    			objArr[i].outPt[j].addLink();
-	    			bezierTemp.setStartObj(objArr[i].outPt[j]);
-	    			bezierTemp.startBezier(true);
-	    			bezierTemp.onmousedown(e);
-	    			bezierStarted = true;
-	    			break;
-	    		}
-    		}
-    	}
-
-    	// all in point ready for link(show color when mouse over)
-		for(var i=0;i<objArr.length;i++){
-			if(bezierStarted){
-	    		for(var k=0;k<objArr[i].inPt.length;k++){
-		    		objArr[i].inPt[k].readyForLink();
-		    		objArr[i].inPt[k].value = null;
-	    		}
-			}
-		}
-
-		mouseCanDrag = true;
-	};
-	canvas.onmouseup = function(e){
-		mouseCanDrag = false;
-		canvas.onmousedown = null;
-		canvas.onmousemove = null;
-		objExclusiveLock = false;
-    	for(var i=0;i<objArr.length;i++){
-    		objArr[i].onmouseup(e);
-    		// in
-    		for(var j=0;j<objArr[i].inPt.length;j++){
-    			objArr[i].inPt[j].holdForLink();
-	    		if(objArr[i].inPt[j].isInParamPos(e.clientX,e.clientY)){
-	    			if(bezierTemp){
-	    				if(!objArr[i].inPt[j].getLink()){
-		    				bezierTemp.setEndObj(objArr[i].inPt[j]);
-		    				objArr[i].inPt[j].setLink(bezierTemp);
-		    				objArr[i].inPt[j].addLink();
-	    				}else{
-	    					console.log("already occupied!");
-	    				}
-	    			}
-	    		}
-    		}
-    	}
-		if(bezierTemp){
-			if(!bezierTemp.getEndObj()){
-				// if bezier has no end point, remove start point
-				(bezierTemp.getStartObj()).removeLink();
-				bezierTemp.setStartObj(null);
-				bezierTemp = null;
-			}else{
-				var existed = false;
-				for(var i=0;i<bezierArr.length;i++){
-					if(bezierTemp==bezierArr[i]){
-						existed = true;
-						bezierTemp = null;
-						break;
-					}
-				}
-				if(!existed){
-					bezierArr.push(bezierTemp);
-					bezierTemp = null;
-				}
-			}
-		}
-	};
-
-	canvas.onmousemove = function (e){
-        var e = e || window.event;
-
-        // move on block
-    	for(var i=0;i<objArr.length;i++){
-    		objArr[i].onmousemove(e);
-    	}
-
-	    // for bezier
-	    if(bezierTemp){
-	    	bezierTemp.onmousemove(e);
-	    }
-		
-		// for drag
-	    if(mouseCanDrag){
-	        // move block
-	    	for(var i=0;i<objArr.length;i++){
-	    		objArr[i].onmousemovewhendown(e);
-	    	}
-
-		    // for bezier
-		    if(bezierTemp){
-		    	bezierTemp.onmousemovewhendown(e);
-		    }
-	    }
-    };
+//	canvas.onmousedown = function(e){
+//		mouseInPanel = 0;
+//		// for block
+//		//for showing order, high priority will render first
+//    	for(var i=objArr.length-1;i>=0;i--){
+//    		if(!objExclusiveLock && objArr[i].isInArea(e.clientX,e.clientY)){
+//				objArr[i].onmousedown(e);
+//				objExclusiveLock = true;
+//    		}
+//    		mouseInPanel += objArr[i].isInArea(e.clientX,e.clientY)?1:0;
+//    		objArr[i].onmousedownOutPt(e);
+//    	}
+//    	//reorder showing order, high priority will render first
+//    	reOrder();
+//
+//    	// for bezier
+//    	/*if(mouseInPanel==0){//mouse not in panel or on point can draw bezier, ONLY DEBUG
+//	    	bezierTemp = new Bezier();
+//	    	bezierTemp.startBezier(true);
+//	    	bezierTemp.onmousedown(e);
+//    	}*/
+//
+//    	var bezierStarted = false;// check if start draw bezier to show color of inPoint when mouse over
+//    	for(var i=0;i<objArr.length;i++){
+//    		// in
+//    		for(var j=0;j<objArr[i].inPt.length;j++){
+//	    		if(objArr[i].inPt[j].isInParamPos(e.clientX,e.clientY)){
+//	    			bezierTemp = objArr[i].inPt[j].getLink();
+//	    			if(bezierTemp){
+//	    				objArr[i].inPt[j].setLink(null);
+//		    			objArr[i].inPt[j].removeLink();
+//		    			bezierTemp.setEndObj(null);
+//		    			bezierTemp.setStart(bezierTemp.getStart().x,bezierTemp.getStart().y);
+//		    			bezierTemp.startBezier(true);
+//		    			removeBezierFromList(bezierTemp);
+//		    			bezierStarted = true;
+//		    			break;
+//	    			}
+//	    		}
+//    		}
+//    		// out
+//    		for(var j=0;j<objArr[i].outPt.length;j++){
+//	    		if(objArr[i].outPt[j].isOutStart()){
+//	    			bezierTemp = new Bezier();
+//	    			objArr[i].outPt[j].addLink();
+//	    			bezierTemp.setStartObj(objArr[i].outPt[j]);
+//	    			bezierTemp.startBezier(true);
+//	    			bezierTemp.onmousedown(e);
+//	    			bezierStarted = true;
+//	    			break;
+//	    		}
+//    		}
+//    	}
+//
+//    	// all in point ready for link(show color when mouse over)
+//		for(var i=0;i<objArr.length;i++){
+//			if(bezierStarted){
+//	    		for(var k=0;k<objArr[i].inPt.length;k++){
+//		    		objArr[i].inPt[k].readyForLink();
+//		    		objArr[i].inPt[k].value = null;
+//	    		}
+//			}
+//		}
+//
+//		mouseCanDrag = true;
+//	};
+//	canvas.onmouseup = function(e){
+//		mouseCanDrag = false;
+//		canvas.onmousedown = null;
+//		canvas.onmousemove = null;
+//		objExclusiveLock = false;
+//    	for(var i=0;i<objArr.length;i++){
+//    		objArr[i].onmouseup(e);
+//    		// in
+//    		for(var j=0;j<objArr[i].inPt.length;j++){
+//    			objArr[i].inPt[j].holdForLink();
+//	    		if(objArr[i].inPt[j].isInParamPos(e.clientX,e.clientY)){
+//	    			if(bezierTemp){
+//	    				if(!objArr[i].inPt[j].getLink()){
+//		    				bezierTemp.setEndObj(objArr[i].inPt[j]);
+//		    				objArr[i].inPt[j].setLink(bezierTemp);
+//		    				objArr[i].inPt[j].addLink();
+//	    				}else{
+//	    					console.log("already occupied!");
+//	    				}
+//	    			}
+//	    		}
+//    		}
+//    	}
+//		if(bezierTemp){
+//			if(!bezierTemp.getEndObj()){
+//				// if bezier has no end point, remove start point
+//				(bezierTemp.getStartObj()).removeLink();
+//				bezierTemp.setStartObj(null);
+//				bezierTemp = null;
+//			}else{
+//				var existed = false;
+//				for(var i=0;i<bezierArr.length;i++){
+//					if(bezierTemp==bezierArr[i]){
+//						existed = true;
+//						bezierTemp = null;
+//						break;
+//					}
+//				}
+//				if(!existed){
+//					bezierArr.push(bezierTemp);
+//					bezierTemp = null;
+//				}
+//			}
+//		}
+//	};
+//
+//	canvas.onmousemove = function (e){
+//        var e = e || window.event;
+//
+//        // move on block
+//    	for(var i=0;i<objArr.length;i++){
+//    		objArr[i].onmousemove(e);
+//    	}
+//
+//	    // for bezier
+//	    if(bezierTemp){
+//	    	bezierTemp.onmousemove(e);
+//	    }
+//
+//		// for drag
+//	    if(mouseCanDrag){
+//	        // move block
+//	    	for(var i=0;i<objArr.length;i++){
+//	    		objArr[i].onmousemovewhendown(e);
+//	    	}
+//
+//		    // for bezier
+//		    if(bezierTemp){
+//		    	bezierTemp.onmousemovewhendown(e);
+//		    }
+//	    }
+//    };
 
 	// for bezier
 	if(bezierTemp){

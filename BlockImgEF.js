@@ -31,11 +31,11 @@ function BlockImgEF(){
     this.doAction = function(){
         if(this.inPt[0].value){
             if(!oldImgSrc){
-                oldImgSrc = this.inPt[0].value.src.substring(0,100);
+                oldImgSrc = this.inPt[0].value.accessKey;
             }else{
-                if(oldImgSrc!=this.inPt[0].value.src.substring(0,100)){
+                if(oldImgSrc!=this.inPt[0].value.accessKey){
                     done = false;
-                    oldImgSrc = this.inPt[0].value.src.substring(0,100);
+                    oldImgSrc = this.inPt[0].value.accessKey;
                 }
             }
             if(!done){
@@ -49,15 +49,18 @@ function BlockImgEF(){
             done = false;
             // clear img value make sure output is no value
             img = [
-                new Image(),new Image(),new Image(),new Image(),new Image(),
-                new Image(),new Image(),new Image(),new Image(),new Image(),
-                new Image(),new Image(),new Image(),new Image()
+                null,null,null,null,null,
+                null,null,null,null,null,
+                null,null,null,null
               ];
         }
 
         // make sure out value is the newest and will not lost
         for(var i=0;i<img.length;i++){
             this.outPt[i].value = img[i];
+            if(img[i]){
+                img[i].accessKey = oldImgSrc;
+            }
         }
     };
 

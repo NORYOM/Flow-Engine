@@ -19,21 +19,22 @@ function BlockImgView(){
         this.outPt[0].value = this.inPt[0].value;
 
         // init image from input
-        if(this.inPt[0].value && this.inPt[0].value.src){
+        if(this.inPt[0].value){
             if(!oldImgSrc){
                 imgChanged = true;
             }else{
-                if(oldImgSrc!=this.inPt[0].value.src.substring(0,100)){
+                if(oldImgSrc!=this.inPt[0].value.accessKey){
                     imgChanged = true;
                 }
             }
             if(imgChanged){
-                oldImgSrc = this.inPt[0].value.src.substring(0,100);
+                oldImgSrc = this.inPt[0].value.accessKey;
                 imageView.initImg(this.inPt[0].value,this.w*1.5,this.h*1.5);
                 imgChanged = false;
             }
         }else{
             imageView.clearImg();
+            oldImgSrc = null;
         }
     };
 

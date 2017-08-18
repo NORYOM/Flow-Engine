@@ -29,6 +29,11 @@ function BlockImgFile(){
                 img.onload = function(){
                     imageView.initImg(img,borderW,borderH);
                     tempImgData = imageView.getImg();
+                    if(tempImgData.accessKey==""){
+                        tempImgData.accessKey = 1;
+                    }else{
+                        tempImgData.accessKey *= -1;
+                    }
                 };
             };
             if(event.target.files[0]){
