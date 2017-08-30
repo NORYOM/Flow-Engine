@@ -28,6 +28,11 @@ function BlockImgEF(){
 
     var done = false;
     var oldImgSrc;
+
+    var asyncFunc = new Promise((resolve, reject) => {
+        resolve();
+    });
+
     this.doAction = function(){
         if(this.inPt[0].value){
             if(!oldImgSrc){
@@ -39,10 +44,15 @@ function BlockImgEF(){
                 }
             }
             if(!done){
-                for(var i=0;i<img.length;i++){
-                    img[i] = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.h*1.5);
-                    $AI(img[i]).ps(psMethod[i]).replace(img[i]);
-                }
+                asyncFunc.then(() => {
+                    for(var i=0;i<img.length;i++){
+                        img[i] = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.h*1.5);
+                        $AI(img[i]).ps(psMethod[i]).replace(img[i]);
+                        // make sure out value is the newest and will not lost
+                        this.outPt[i].value = img[i];
+                        img[i].accessKey = oldImgSrc;
+                    }
+                });
                 done = true;
             }
         }else{
@@ -53,13 +63,8 @@ function BlockImgEF(){
                 null,null,null,null,null,
                 null,null,null,null
               ];
-        }
-
-        // make sure out value is the newest and will not lost
-        for(var i=0;i<img.length;i++){
-            this.outPt[i].value = img[i];
-            if(img[i]){
-                img[i].accessKey = oldImgSrc;
+            for(var i=0;i<img.length;i++){
+                this.outPt[i].value = img[i];
             }
         }
     };
