@@ -21,6 +21,7 @@
 		var ctx;
 		var fps = 60;
 		var canvas;
+		var cvsRect;
 		window.onload = function(){
 			initCanvas("canvas1",1000,800);
 		}
@@ -38,9 +39,9 @@
 	|
 	<input type="button" value="  showPrj  " onclick="showPrj();">
 	<input type="button" value="  readPrj  " onclick="readPrj();">
+	<textarea id="json"></textarea>
 	<br>
-	<canvas id="canvas1" width="800" height="600" style="border:1px solid red; cursor:default;">
+	<canvas id="canvas1" style="border:1px solid red; cursor:default;position: absolute;top: 10;left: 10;">
 		do not support HTML5
 	</canvas>
-	<textarea id="json"></textarea>
 </body>

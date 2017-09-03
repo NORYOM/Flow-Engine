@@ -1,6 +1,5 @@
 function Button(){
     var cvs = canvas;
-    var cvsRect = canvas.getBoundingClientRect();
 
     this.x = 0;
     this.y = 0;
@@ -18,9 +17,6 @@ function Button(){
 
     this.getCVS = function(){
         return cvs;
-    };
-    this.getCVSRect = function(){
-        return cvsRect;
     };
     this.setX = function(n){
         this.x = n;
@@ -51,8 +47,8 @@ function Button(){
     }
 
     this.isInBtnArea = function(mx,my){
-        var cx = mx-this.getCVSRect().left*(this.getCVS().width/this.getCVSRect().width);
-        var cy = my-this.getCVSRect().top*(this.getCVS().height/this.getCVSRect().height);
+        var cx = mx-cvsRect.left*(this.getCVS().width/cvsRect.width);
+        var cy = my-cvsRect.top*(this.getCVS().height/cvsRect.height);
         
         if(cx>this.x-buttonR && cx<(this.x+this.w+buttonR)
         && cy>this.y-buttonR && cy<(this.y+this.h+buttonR)){
@@ -86,8 +82,6 @@ function Button(){
     };
 
     this.rend = function(){
-        // refresh canvas bounding, incase scroll page
-        cvsRect = canvas.getBoundingClientRect();
         this.w = this.getLabelLength();
 
         var btntColor = mouseDown?this.colorMouseDown:(mouseOver?this.colorOn:this.colorOff);

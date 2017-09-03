@@ -13,7 +13,6 @@ function BaseObj(){
     var drag = false;
 
     var cvs = canvas;
-    this.cvsRect = canvas.getBoundingClientRect();
 
     this.setR = function(n){
         this.r = n;
@@ -36,18 +35,15 @@ function BaseObj(){
     this.getCVS = function(){
         return cvs;
     };
-    this.getCVSRect = function(){
-        return this.cvsRect;
-    };
 
     this.isInArea = function(mx,my){
-        var cx = mx-this.cvsRect.left*(cvs.width/this.cvsRect.width);
-        var cy = my-this.cvsRect.top*(cvs.height/this.cvsRect.height);
+        var cx = mx-cvsRect.left*(cvs.width/cvsRect.width);
+        var cy = my-cvsRect.top*(cvs.height/cvsRect.height);
         return (cx>this.x-this.r && cx<(this.x+this.w+this.r) && cy>this.y-this.r && cy<(this.y+this.h+this.r));
     };
     this.isInTitleBar = function(mx,my){
-        var cx = mx-this.cvsRect.left*(cvs.width/this.cvsRect.width);
-        var cy = my-this.cvsRect.top*(cvs.height/this.cvsRect.height);
+        var cx = mx-cvsRect.left*(cvs.width/cvsRect.width);
+        var cy = my-cvsRect.top*(cvs.height/cvsRect.height);
         return (cx>this.x-this.r && cx<(this.x+this.w+this.r) && cy>this.y-this.r && cy<this.y);
     };
 
@@ -77,8 +73,6 @@ function BaseObj(){
     };
 
     this.rend = function(){
-        // refresh canvas bounding, incase scroll page
-        this.cvsRect = canvas.getBoundingClientRect();
         // base shape
         ctx.save();
         ctx.lineWidth=1;
