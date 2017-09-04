@@ -79,9 +79,7 @@ function BaseObj(){
         ctx.beginPath();
         ctx.strokeStyle="#000000";
         
-        ctx.arc(this.x, this.y, this.r, (Math.PI/180)*180, -1*(Math.PI/180)*90, false);//TL
-        ctx.lineTo(this.x+this.w,this.y-this.r);//T
-        ctx.arc(this.x+this.w, this.y, this.r, -1*(Math.PI/180)*90, (Math.PI/180)*0, false);//TR
+        ctx.moveTo(this.x+this.w+this.r,this.y);
         ctx.lineTo(this.x+this.w+this.r,this.y+this.h);//R
         ctx.arc(this.x+this.w, this.y+this.h, this.r, (Math.PI/180)*0, (Math.PI/180)*90, false);//RB
         ctx.lineTo(this.x,this.y+this.h+this.r);//B
@@ -102,6 +100,7 @@ function BaseObj(){
         ctx.lineTo(this.x+this.w,this.y-this.r);//T
         ctx.arc(this.x+this.w, this.y, this.r, -1*(Math.PI/180)*90, (Math.PI/180)*0, false);//TR
         ctx.lineTo(this.x+this.w+this.r,this.y);//C
+        ctx.stroke();
         ctx.fillStyle = this.titleColor;
         ctx.fill();
         ctx.fillStyle = '#eeeebb';
