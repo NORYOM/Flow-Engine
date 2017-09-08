@@ -233,6 +233,13 @@ function addEFObj(){
 	objEF.priority = objArr.length;
 	objArr.push(objEF);
 }
+function addCurveObj(){
+	var objCurv = new BlockImgCurves();
+	objCurv.setX(100);
+	objCurv.setY(100);
+	objCurv.priority = objArr.length;
+	objArr.push(objCurv);
+}
 //--------------debug diginum
 var debugDG = false;
 function showDG(){

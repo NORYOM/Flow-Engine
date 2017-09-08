@@ -104,7 +104,6 @@ function Button(){
         ctx.stroke();
         ctx.fillStyle=btntColor;
         ctx.fill();
-        ctx.fill();
         ctx.fillStyle = '#222222';
         ctx.fillText(this.label,this.x,this.y+buttonR*3/2);
         ctx.closePath();
