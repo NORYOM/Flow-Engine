@@ -2,8 +2,9 @@ function BlockImgCurves(){
     Block.call(this);
     var cvs = canvas;
 
-    var curvePadSize = 125;
+    var curvePadSize = 127;
     var curvePtSize = 10;
+    var controlPtSize = 5;
 
     this.parentType = new Block();
     this.id = (new Date()).getTime()+Math.random();
@@ -16,30 +17,57 @@ function BlockImgCurves(){
     this.outPt = [new ParamPoint()];
 
     var drag = false;
-    var centX,centY,cpX1,cpY1,cpX2,cpY2,x3,y3;
+    var dragTitle = false;
+    var mx,my,dx,dy,cpX1,cpY1,cpX2,cpY2;
     var ptS,ptE,ptC;
 
+    this.isInPadW = function(e){
+        mx = e.clientX-cvsRect.left*(cvs.width/cvsRect.width);
+        if(mx>=this.x+this.r/2+curvePtSize/2 && mx<=this.x+this.r/2+curvePadSize-curvePtSize/2){
+            return true;
+        }
+        return false;
+    };
+    this.isInPadH = function(e){
+        my = e.clientY-cvsRect.top*(cvs.height/cvsRect.height);
+        if(my>=this.y+this.r/2+curvePtSize/2 && my<=this.y+this.r/2+curvePadSize-curvePtSize/2){
+            return true;
+        }
+        return false;
+    };
     this.onmousedown = function(e){
         this.parentType.onmousedown.call(this,e);
-
-        drag = true;
-
-        ptC.x = e.clientX-cvsRect.left*(cvs.width/cvsRect.width);
-        ptC.y = e.clientY-cvsRect.top*(cvs.height/cvsRect.height);
+        if(!this.isInTitleBar(e.clientX,e.clientY)){
+            if(this.isInPadW(e) && this.isInPadH(e)){
+                drag = true;
+                ptC.x = e.clientX-cvsRect.left*(cvs.width/cvsRect.width);
+                ptC.y = e.clientY-cvsRect.top*(cvs.height/cvsRect.height);
+            }
+        }else{
+            dragTitle = true;
+            dx = e.clientX - ptC.x;
+            dy = e.clientY - ptC.y;
+        }
     };
 
     this.onmouseup = function(e){
         this.parentType.onmouseup.call(this,e);
         drag = false;
+        dragTitle = false;
     };
     this.onmousemove = function(e){
         this.parentType.onmousemove.call(this,e);
-        centX = this.x+this.r/2+curvePadSize/2;
-        centY = this.y+this.r/2+curvePadSize/2;
         if(drag){
-            startDraw = true;
-            ptC.x = e.clientX-cvsRect.left*(cvs.width/cvsRect.width);
-            ptC.y = e.clientY-cvsRect.top*(cvs.height/cvsRect.height);
+            if(this.isInPadW(e)){
+                ptC.x = e.clientX-cvsRect.left*(cvs.width/cvsRect.width);
+            }
+            if(this.isInPadH(e)){
+                ptC.y = e.clientY-cvsRect.top*(cvs.height/cvsRect.height);
+            }
+        }
+        if(dragTitle){
+            ptC.x = e.clientX - dx;
+            ptC.y = e.clientY - dy;
         }
     };
 
@@ -61,24 +89,26 @@ function BlockImgCurves(){
             };
         }
 
-                cpX1 = ptS.x + (ptC.x-ptS.x)/4;
-                cpY1 = ptS.y - (ptC.y-ptS.y)/4;
-                cpX2 = ptC.x-curvePtSize;
-                cpY2 = ptC.y+curvePtSize;
+        cpX1 = ptC.x-curvePtSize;
+        cpY1 = ptC.y+curvePtSize;
+        cpX2 = ptC.x+curvePtSize;
+        cpY2 = ptC.y-curvePtSize;
 
         ctx.save();
 
         ctx.lineWidth=1;
         ctx.fillStyle="#aaaaaa";
         ctx.fillRect(this.x+this.r/2,this.y+this.r/2,curvePadSize,curvePadSize);
-        ctx.fillStyle="#ffffff";
-        ctx.fillRect(ptC.x-2,ptC.y-2,2,2);
 
         ctx.beginPath();
         ctx.moveTo(ptS.x,ptS.y);
-        ctx.bezierCurveTo(cpX1,cpY1,cpX2,cpY2,ptE.x,ptE.y);
+        ctx.bezierCurveTo(ptS.x,ptS.y,cpX1,cpY1,ptC.x,ptC.y);
+        ctx.bezierCurveTo(cpX2,cpY2,ptE.x,ptE.y,ptE.x,ptE.y);
         ctx.stroke();
         ctx.closePath();
+
+        ctx.fillStyle="#ffffff";
+        ctx.fillRect(ptC.x-controlPtSize/2,ptC.y-controlPtSize/2,controlPtSize,controlPtSize);
         ctx.restore();
     };
 }
