@@ -23,6 +23,7 @@ function BlockImgCurves(){
     var ptS,ptE,ptC;
     var currentPtCNum;
     var dragPt = false;
+    var maxCtlPtNum = 8;
 
     this.btnAddCtlPt = new Button();
     this.btnDelCtlPt = new Button();
@@ -156,11 +157,23 @@ function BlockImgCurves(){
                 }
             );
             currentPtCNum = ptC.length-1;
+            if(ptC.length==maxCtlPtNum){
+                this.btnAddCtlPt.setDisable(true);
+            }
+            if(ptC.length>0){
+                this.btnDelCtlPt.setDisable(false);
+            }
         }
         if(delCtlPt){
             delCtlPt = false;
             ptC.splice(ptC.length-1,1);
             currentPtCNum = ptC.length-1;
+            if(ptC.length<maxCtlPtNum){
+                this.btnAddCtlPt.setDisable(false);
+            }
+            if(ptC.length==0){
+                this.btnDelCtlPt.setDisable(true);
+            }
         }
 
         ctx.save();

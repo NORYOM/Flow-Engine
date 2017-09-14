@@ -14,6 +14,7 @@ function Button(){
     var buttonR = 5;
     var mouseOver = false;
     var mouseDown = false;
+    var disabled = false;
 
     this.getCVS = function(){
         return cvs;
@@ -30,6 +31,9 @@ function Button(){
     };
     this.getR = function(x,y){
         return buttonR;
+    };
+    this.setDisable = function(flag){
+        disabled = flag;
     };
 
     this.getLabelLength = function(){
@@ -58,6 +62,9 @@ function Button(){
     };
 
     this.onmousedown = function(e){
+        if(disabled){
+            return;
+        }
         if(this.isInBtnArea(e.clientX,e.clientY)){
             mouseDown = true;
         }
@@ -71,6 +78,9 @@ function Button(){
         mouseDown = false;
     };
     this.onmousemove = function(e){
+        if(disabled){
+            return;
+        }
         if(this.isInBtnArea(e.clientX,e.clientY)){
             mouseOver = true;
         }else{
@@ -84,7 +94,7 @@ function Button(){
     this.rend = function(){
         this.w = this.getLabelLength();
 
-        var btntColor = mouseDown?this.colorMouseDown:(mouseOver?this.colorOn:this.colorOff);
+        var btnColor = mouseDown?this.colorMouseDown:(mouseOver?this.colorOn:this.colorOff);
 
         ctx.save();
 
@@ -102,7 +112,10 @@ function Button(){
         ctx.strokeStyle="#000000";
         ctx.lineWidth=2;
         ctx.stroke();
-        ctx.fillStyle=btntColor;
+        ctx.fillStyle=btnColor;
+        if(disabled){
+            ctx.fillStyle = "#666666";
+        }
         ctx.fill();
         ctx.fillStyle = '#222222';
         ctx.fillText(this.label,this.x,this.y+buttonR*3/2);
