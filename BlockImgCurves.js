@@ -5,12 +5,13 @@ function BlockImgCurves(){
     var curvePadSize = 127;
     var curvePtDistance = 10;
     var controlPtSize = 5;
+    var linearBarW = 5;
 
     this.parentType = new Block();
     this.id = (new Date()).getTime()+Math.random();
-    this.h=curvePadSize+this.r;
+    this.h=curvePadSize+this.r+linearBarW;
     this.w=curvePadSize+this.r;
-    this.title="Curves";
+    this.title="灰度曲线编辑";
     this.titleColor = 'rgba(0,200,200,0.5)';
 
     this.inPt = [new ParamPoint()];
@@ -193,10 +194,15 @@ function BlockImgCurves(){
         if(!ptC){
             ptC = [
                 {
-                    x:this.x+this.r/2+curvePadSize/2,
-                    y:this.y+this.r/2+curvePadSize/2
+                    x:this.x+this.r/2+curvePadSize/3,
+                    y:this.y+this.r/2+curvePadSize*2/3
+                },
+                {
+                    x:this.x+this.r/2+curvePadSize*2/3,
+                    y:this.y+this.r/2+curvePadSize/3
                 }
             ];
+            currentPtCNum = 1;
         }
         if(addCtlPt){
             addCtlPt = false;
@@ -267,6 +273,17 @@ function BlockImgCurves(){
             }
             ctx.fillRect(ptC[currentPtCNum].x-controlPtSize/2,ptC[currentPtCNum].y-controlPtSize/2,controlPtSize,controlPtSize);
         }
+
+        var lgV = ctx.createLinearGradient(this.x+this.r/2,this.y+this.r/2, this.x+this.r/2, this.y+this.r/2+curvePadSize);
+        var lgH = ctx.createLinearGradient(this.x+this.r/2,this.y+this.r/2+curvePadSize, this.x+this.r/2+curvePadSize, this.y+this.r/2+curvePadSize);
+        lgV.addColorStop(0, '#ffffff');
+        lgV.addColorStop(1, '#000000');
+        lgH.addColorStop(0, '#000000');
+        lgH.addColorStop(1, '#ffffff');
+        ctx.fillStyle = lgV;
+        ctx.fillRect(this.x+linearBarW,this.y+this.r/2, linearBarW, curvePadSize+linearBarW);
+        ctx.fillStyle = lgH;
+        ctx.fillRect(this.x+this.r/2,this.y+this.r/2+curvePadSize, curvePadSize, linearBarW);
         ctx.restore();
 
         // add button
