@@ -24,6 +24,8 @@ function BlockImgCurves(){
     var currentPtCNum;
     var dragPt = false;
     var maxCtlPtNum = 8;
+    var curvX = [];
+    var curvY = [];
 
     this.btnAddCtlPt = new Button();
     this.btnDelCtlPt = new Button();
@@ -36,6 +38,52 @@ function BlockImgCurves(){
     };
     this.btnDelCtlPt.doAction = function(){
         delCtlPt = true;
+    };
+
+    // process image
+    var img = new Image();
+    var imageView = new ImageView();
+    var done = false;
+    var oldImgSrc;
+    var asyncFunc = new Promise((resolve, reject) => {
+        resolve();
+    });
+    this.doAction = function(){
+        if(this.inPt[0].value){
+            if(!oldImgSrc){
+                oldImgSrc = this.inPt[0].value.accessKey;
+            }else{
+                if(oldImgSrc!=this.inPt[0].value.accessKey){
+                    done = false;
+                    oldImgSrc = this.inPt[0].value.accessKey;
+                }
+            }
+            if(!done){
+                asyncFunc.then(() => {
+                    img = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.h*1.5);
+                    curvX = [];
+                    curvY = [];
+                    //calculate curve array
+                    for(var i=0;i<ptC.length;i++){
+                        curvX.push(parseInt(ptC[i].x-(this.x+this.r/2))*2);
+                        curvY.push(parseInt(this.y+this.r/2+curvePadSize-ptC[i].y)*2);
+                    }
+                    $AI(img).act("curve",curvX,curvY).replace(img);
+                    // make sure out value is the newest and will not lost
+                    this.outPt[0].value = img;
+                    img.accessKey = oldImgSrc;
+                });
+                done = true;
+            }
+        }else{
+           this.refreshOutPut();
+        }
+    };
+    this.refreshOutPut=function(){
+        done = false;
+        // clear img value make sure output is no value
+        img = null;
+        this.outPt[0].value = null;
     };
 
     this.isInPadW = function(e){
@@ -119,6 +167,8 @@ function BlockImgCurves(){
                         ptC[currentPtCNum].y = this.y+this.r/2+curvePadSize-controlPtSize;
                     }
                 }
+                //refresh output
+                this.refreshOutPut();
             }
         }
         if(dragTitle){
@@ -163,6 +213,7 @@ function BlockImgCurves(){
             if(ptC.length>0){
                 this.btnDelCtlPt.setDisable(false);
             }
+            this.refreshOutPut();
         }
         if(delCtlPt){
             delCtlPt = false;
@@ -174,6 +225,7 @@ function BlockImgCurves(){
             if(ptC.length==0){
                 this.btnDelCtlPt.setDisable(true);
             }
+            this.refreshOutPut();
         }
 
         ctx.save();
