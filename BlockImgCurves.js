@@ -62,13 +62,15 @@ function BlockImgCurves(){
             if(!done){
                 asyncFunc.then(() => {
                     img = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.h*1.5);
-                    curvX = [];
-                    curvY = [];
+                    curvX = [0];
+                    curvY = [0];
                     //calculate curve array
                     for(var i=0;i<ptC.length;i++){
                         curvX.push(parseInt(ptC[i].x-(this.x+this.r/2))*2);
                         curvY.push(parseInt(this.y+this.r/2+curvePadSize-ptC[i].y)*2);
                     }
+                    curvX.push(255);
+                    curvY.push(255);
                     $AI(img).act("curve",curvX,curvY).replace(img);
                     // make sure out value is the newest and will not lost
                     this.outPt[0].value = img;
@@ -77,14 +79,15 @@ function BlockImgCurves(){
                 done = true;
             }
         }else{
-           this.refreshOutPut();
+            done = false;
+            // clear img value make sure output is no value
+            img = null;
+            this.outPt[0].value = null;
         }
     };
     this.refreshOutPut=function(){
         done = false;
-        // clear img value make sure output is no value
-        img = null;
-        this.outPt[0].value = null;
+        this.outPt[0].value.accessKey *= -1;
     };
 
     this.isInPadW = function(e){
@@ -194,12 +197,8 @@ function BlockImgCurves(){
         if(!ptC){
             ptC = [
                 {
-                    x:this.x+this.r/2+curvePadSize/3,
-                    y:this.y+this.r/2+curvePadSize*2/3
-                },
-                {
-                    x:this.x+this.r/2+curvePadSize*2/3,
-                    y:this.y+this.r/2+curvePadSize/3
+                    x:this.x+this.r/2+curvePadSize/2,
+                    y:this.y+this.r/2+curvePadSize/2
                 }
             ];
             currentPtCNum = 1;
