@@ -74,6 +74,13 @@ function BlockImgCurves(){
                     $AI(img).act("curve",curvX,curvY).replace(img);
                     // make sure out value is the newest and will not lost
                     this.outPt[0].value = img;
+                    this.outPt[0].operation = [];
+                    if(this.inPt[0].operation){
+                        for(var j=0;j<this.inPt[0].operation.length;j++){
+                            this.outPt[0].operation.push(this.inPt[0].operation[j]);
+                        }
+                    }
+                    this.outPt[0].operation.push({type:"act",value:{action:"curve",param:[curvX,curvY]}});
                     img.accessKey = oldImgSrc;
                 });
                 done = true;
@@ -87,7 +94,9 @@ function BlockImgCurves(){
     };
     this.refreshOutPut=function(){
         done = false;
-        this.outPt[0].value.accessKey *= -1;
+        if(this.outPt[0].value && this.outPt[0].value.accessKey){
+            this.outPt[0].value.accessKey *= -1;
+        }
     };
 
     this.isInPadW = function(e){

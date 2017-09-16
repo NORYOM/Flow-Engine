@@ -17,6 +17,7 @@ function BlockImgView(){
     var imgChanged = false;
     this.doAction = function(){
         this.outPt[0].value = this.inPt[0].value;
+        this.outPt[0].operation = this.inPt[0].operation;
 
         // init image from input
         if(this.inPt[0].value){

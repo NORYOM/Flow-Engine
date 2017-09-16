@@ -50,6 +50,13 @@ function BlockImgEF(){
                         $AI(img[i]).ps(psMethod[i]).replace(img[i]);
                         // make sure out value is the newest and will not lost
                         this.outPt[i].value = img[i];
+                        this.outPt[i].operation = [];
+                        if(this.inPt[0].operation){
+                            for(var j=0;j<this.inPt[0].operation.length;j++){
+                                this.outPt[i].operation.push(this.inPt[0].operation[j]);
+                            }
+                        }
+                        this.outPt[i].operation.push({type:"ps",value:psMethod[i]});
                         img[i].accessKey = oldImgSrc;
                     }
                 });

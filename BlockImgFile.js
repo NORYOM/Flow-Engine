@@ -8,10 +8,12 @@ function BlockImgFile(){
     this.titleColor = 'rgba(180,180,0,0.5)';
 
     var img = new Image();
+    var imgClone = new Image();
 
     this.inPt = [];
     this.outPt = [new ParamPoint()];
     var imageView = new ImageView();
+    var imgLoaded = false;
 
     this.btnObj = new Button();
     this.btnObj.label = "选择文件";
@@ -26,6 +28,7 @@ function BlockImgFile(){
                 //document.getElementById("loadedImg").src = event.target.result;
                 //////////
                 img.src = event.target.result;
+                imgClone.src = event.target.result;
                 img.onload = function(){
                     imageView.initImg(img,borderW,borderH);
                     tempImgData = imageView.getImg();
@@ -34,6 +37,7 @@ function BlockImgFile(){
                     }else{
                         tempImgData.accessKey *= -1;
                     }
+                    imgLoaded = true;
                 };
             };
             if(event.target.files[0]){
@@ -74,6 +78,10 @@ function BlockImgFile(){
     this.doAction = function(){
         if(tempImgData){
             this.outPt[0].value = tempImgData;
+            if(imgLoaded){
+                this.outPt[0].operation = [{type:"src",value:imgClone}];
+                imgLoaded = false;
+            }
         }
     };
 

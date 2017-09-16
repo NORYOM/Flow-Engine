@@ -240,6 +240,13 @@ function addCurveObj(){
 	objCurv.priority = objArr.length;
 	objArr.push(objCurv);
 }
+function addSaveObj(){
+	var objSave = new BlockImgSave();
+	objSave.setX(100);
+	objSave.setY(100);
+	objSave.priority = objArr.length;
+	objArr.push(objSave);
+}
 //--------------debug diginum
 var debugDG = false;
 function showDG(){
@@ -475,6 +482,7 @@ function render(timestamp){
 		// transfer value from outPt to inPt
 		if(bezierArr[i].getStartObj() && bezierArr[i].getEndObj()){
 		    bezierArr[i].getEndObj().value = bezierArr[i].getStartObj().value;
+		    bezierArr[i].getEndObj().operation = bezierArr[i].getStartObj().operation;
 		}
 	}
 

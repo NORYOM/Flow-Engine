@@ -10,6 +10,7 @@ function ParamPoint(){
     colorMouseDown = "#7777cc";
     colorOn = "#cccc00";
     this.value = null;
+    this.operation = null;
 
     var parameterPointR = 5;
     var mouseDrag = false;
