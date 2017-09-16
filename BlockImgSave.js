@@ -29,7 +29,11 @@ function BlockImgSave(){
         resolve();
     });
     this.doAction = function(){
-        opArr = this.inPt[0].operation;
+        if(this.inPt[0].value){
+            opArr = this.inPt[0].operation;
+        }else{
+            opArr = null;
+        }
     };
 
     function decodeOperation(){
@@ -52,6 +56,8 @@ function BlockImgSave(){
                     }
                 }
             }
+        }else{
+            img = null;
         }
     }
 
@@ -72,6 +78,8 @@ function BlockImgSave(){
                 saveLnk.remove();
                 saveLnk = null;
             }
+        }else{
+            console.log("no image can save");
         }
     }
 
