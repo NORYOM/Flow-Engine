@@ -77,7 +77,6 @@ function BlockImgSave(){
                 saveImg.src = saveCvs.toDataURL("image/jpeg");
                 if(saveImg.width==0 || saveImg.height==0){
                     saveLnk.href = img.src;
-                    saveLnk.target = "_blank";
                 }else{
                     saveLnk.href = saveCvs.toDataURL("image/jpeg").replace("image/jpeg",'image/octet-stream');
                 }
