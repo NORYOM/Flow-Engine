@@ -45,7 +45,24 @@ function ImageView(){
         clnCvs.width = rec.width;
         clnCvs.height = rec.height;
         clnCvs.getContext("2d").drawImage(img,0,0,rec.width,rec.height);
-        clnImg.src = clnCvs.toDataURL("image/png");
+        clnImg.src = clnCvs.toDataURL("image/jpeg");
+        if(clnImg.width==0 || clnImg.height==0){// for chrome CORS problem
+            var children = document.body.children;
+            for(var i=0;i<children.length;i++){
+                if(children[i].nodeName.toLowerCase()=="img"){
+                    document.body.removeChild(children[i]);
+                    break;
+                }
+            }
+            clnImg = document.createElement("img");
+            document.body.appendChild(clnImg);
+            clnImg.src = img.src;
+            clnImg.width = rec.width;
+            clnImg.height = rec.height;
+            clnImg.style.width = rec.width + "px";
+            clnImg.style.height = rec.height + "px";
+            clnImg.style.display = "none";
+        }
         return clnImg;
     };
     this.calculateImgSize = function(borderW,borderH){

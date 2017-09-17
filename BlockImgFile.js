@@ -4,7 +4,7 @@ function BlockImgFile(){
     this.id = (new Date()).getTime()+Math.random();
     this.h=120;
     this.w=120;
-    this.title="Image File";
+    this.title="文件";
     this.titleColor = 'rgba(180,180,0,0.5)';
 
     var img = new Image();
