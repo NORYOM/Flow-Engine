@@ -77,8 +77,8 @@ function BlockImgFile(){
     };
     this.doAction = function(){
         if(tempImgData){
-            this.outPt[0].value = tempImgData;
             if(imgLoaded){
+                this.outPt[0].value = tempImgData;
                 this.outPt[0].operation = [{type:"src",value:imgClone}];
                 imgLoaded = false;
             }
