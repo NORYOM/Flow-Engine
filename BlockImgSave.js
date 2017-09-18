@@ -9,9 +9,9 @@ function BlockImgSave(){
 
     this.inPt = [new ParamPoint()];
     this.outPt = [];
-    this.btnPng = new Button();
-    this.btnPng.label = "保存新图片";
-    this.btnPng.doAction = function(){
+    this.btnSave = new Button();
+    this.btnSave.label = "保存新图片";
+    this.btnSave.doAction = function(){
         asyncFunc.then(() => {
             decodeOperation();
             saveImg();
@@ -73,10 +73,53 @@ function BlockImgSave(){
             if(!saveLnk){
                 saveLnk = document.createElement("a");
                 saveLnk.download = "新图片.jpg";
-                var saveImg = document.createElement("img");
-                saveImg.src = saveCvs.toDataURL("image/jpeg");
-                if(saveImg.width==0 || saveImg.height==0){
-                    saveLnk.href = img.src;
+                var save2Img = document.createElement("img");
+                save2Img.src = saveCvs.toDataURL("image/jpeg");
+                var ver = 0;
+                if(!navigator.userAgent.indexOf("QQBrowser")){
+                    var browser = navigator.userAgent.split(" ");
+                    for(var i=0;i<browser.length;i++){
+                        if(browser[i].length>0 && browser[i].toLowerCase().indexOf("chrome")){
+                            ver = browser[i].split("/")[1].split(".")[0];
+                            break;
+                        }
+                    }
+                }
+                if(save2Img.width==0 || save2Img.height==0 || ver>=49){// chrome not support download by CORS
+                    var div = document.createElement("div");
+                    div.width = window.innerWidth/2;
+                    div.height = window.innerHeight/2;
+                    div.align = "center";
+                    div.style.zIndex = 999;
+                    div.style.position = "absolute";
+                    div.style.backgroundColor = "#777777";
+                    div.style.color = "#ffff77";
+                    div.style.border = "solid 1px #000000";
+                    div.innerHTML = "&nbsp;&nbsp;正在使用的浏览器出于安全原因可能会阻止图片自动下载，请右单击图片保存。";
+                    var btn = document.createElement("input");
+                    btn.type = "button";
+                    btn.value = "点击关闭";
+                    btn.onclick = function(){
+                        document.body.removeChild(div);
+                        save2Img = null;
+                        div.remove();
+                    };
+                    div.appendChild(document.createElement("br"));
+                    div.appendChild(document.createElement("br"));
+                    var showImg = new Image();
+                    showImg.src = img.src
+                    if(img.width>img.height){
+                        showImg.width = window.innerWidth/2;
+                    }else{
+                        showImg.height = window.innerHeight/2;
+                    }
+                    div.appendChild(showImg);
+                    div.style.top = (window.innerHeight-div.height)/2+"px";
+                    div.style.left = (window.innerWidth-div.width)/2+"px";
+                    div.innerHTML += "<br>" + img.width +"x"+ img.height;
+                    div.appendChild(document.createElement("br"));
+                    div.appendChild(btn);
+                    document.body.appendChild(div);
                 }else{
                     saveLnk.href = saveCvs.toDataURL("image/jpeg").replace("image/jpeg",'image/octet-stream');
                 }
@@ -91,22 +134,22 @@ function BlockImgSave(){
 
     this.onmousedown = function(e){
         this.parentType.onmousedown.call(this,e);
-        this.btnPng.onmousedown(e);
+        this.btnSave.onmousedown(e);
     };
 
     this.onmouseup = function(e){
         this.parentType.onmouseup.call(this,e);
-        this.btnPng.onmouseup(e);
+        this.btnSave.onmouseup(e);
     };
     this.onmousemove = function(e){
         this.parentType.onmousemove.call(this,e);
-        this.btnPng.onmousemove(e);
+        this.btnSave.onmousemove(e);
     };
     this.rend = function(){
         this.parentType.rend.call(this);
         // button
-        this.btnPng.setPos(this.x+this.r,this.y+this.r/2);
-        this.btnPng.rend();
+        this.btnSave.setPos(this.x+this.r,this.y+this.r/2);
+        this.btnSave.rend();
     };
 }
 
