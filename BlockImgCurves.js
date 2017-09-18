@@ -49,19 +49,21 @@ function BlockImgCurves(){
     var asyncFunc = new Promise((resolve, reject) => {
         resolve();
     });
+    var clnImg;
     this.doAction = function(){
         if(this.inPt[0].value){
             if(!oldImgSrc){
                 oldImgSrc = this.inPt[0].value.accessKey;
+                clnImg = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.h*1.5);
             }else{
                 if(oldImgSrc!=this.inPt[0].value.accessKey){
                     done = false;
                     oldImgSrc = this.inPt[0].value.accessKey;
+                    clnImg = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.h*1.5);
                 }
             }
             if(!done){
                 asyncFunc.then(() => {
-                    img = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.h*1.5);
                     curvX = [0];
                     curvY = [0];
                     //calculate curve array
@@ -71,7 +73,8 @@ function BlockImgCurves(){
                     }
                     curvX.push(255);
                     curvY.push(255);
-                    $AI(img).act("curve",curvX,curvY).replace(img);
+                    img = new Image();
+                    $AI(clnImg).act("curve",curvX,curvY).replace(img);
                     // make sure out value is the newest and will not lost
                     this.outPt[0].value = img;
                     this.outPt[0].operation = [];

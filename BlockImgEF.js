@@ -45,9 +45,10 @@ function BlockImgEF(){
             }
             if(!done){
                 asyncFunc.then(() => {
+                    var clnImg = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.h*1.5);
                     for(var i=0;i<img.length;i++){
-                        img[i] = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.h*1.5);
-                        $AI(img[i]).ps(psMethod[i]).replace(img[i]);
+                        img[i] = new Image();
+                        $AI(clnImg).ps(psMethod[i]).replace(img[i]);
                         // make sure out value is the newest and will not lost
                         this.outPt[i].value = img[i];
                         this.outPt[i].operation = [];
