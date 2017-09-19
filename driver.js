@@ -324,6 +324,12 @@ function readPrj(){
             if(prjObjArr[i].type=="BlockImgEF"){
                 objTemp = new BlockImgEF();
             }
+            if(prjObjArr[i].type=="BlockImgCurves"){
+                objTemp = new BlockImgCurves();
+            }
+            if(prjObjArr[i].type=="BlockImgSave"){
+                objTemp = new BlockImgSave();
+            }
 
             objTemp.setX(prjObjArr[i].x);
             objTemp.setY(prjObjArr[i].y);
