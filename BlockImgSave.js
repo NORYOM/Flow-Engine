@@ -18,7 +18,6 @@ function BlockImgSave(){
         });
     };
 
-    var imageView = new ImageView();
     var img;
     var done = false;
     var opArr;
@@ -38,13 +37,16 @@ function BlockImgSave(){
 
     function decodeOperation(){
         if(opArr){
+            img = new Image();
+            var temp = new Image();
             for(var i=0;i<opArr.length;i++){
                 if(opArr[i].type=="src"){
-                    img = opArr[i].value;
+                    temp = opArr[i].value;
+                    img.src = opArr[i].value.src;
                 }
-                if(img){
+                if(temp){
                     if(opArr[i].type=="ps"){
-                        $AI(img).ps(opArr[i].value).replace(img);
+                        $AI(temp).ps(opArr[i].value).replace(img);
                     }
                     if(opArr[i].type=="act"){
                         var act = opArr[i].value;
@@ -73,19 +75,7 @@ function BlockImgSave(){
             if(!saveLnk){
                 saveLnk = document.createElement("a");
                 saveLnk.download = "新图片.jpg";
-                var save2Img = document.createElement("img");
-                save2Img.src = saveCvs.toDataURL("image/jpeg");
-                var ver = 0;
-                if(!navigator.userAgent.indexOf("QQBrowser")){
-                    var browser = navigator.userAgent.split(" ");
-                    for(var i=0;i<browser.length;i++){
-                        if(browser[i].length>0 && browser[i].toLowerCase().indexOf("chrome")){
-                            ver = browser[i].split("/")[1].split(".")[0];
-                            break;
-                        }
-                    }
-                }
-                if(save2Img.width==0 || save2Img.height==0 || ver>=49){// chrome not support download by CORS
+                if(navigator.userAgent.indexOf("QQBrowser")==-1){// only QQBrowser support download
                     var div = document.createElement("div");
                     div.width = window.innerWidth/2;
                     div.height = window.innerHeight/2;
@@ -101,7 +91,6 @@ function BlockImgSave(){
                     btn.value = "点击关闭";
                     btn.onclick = function(){
                         document.body.removeChild(div);
-                        save2Img = null;
                         div.remove();
                     };
                     div.appendChild(document.createElement("br"));
