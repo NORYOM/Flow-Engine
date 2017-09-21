@@ -65,6 +65,24 @@ function ImageView(){
         }
         return clnImg;
     };
+    this.cloneImg = function(img){
+        var clnImg = new Image();
+        var children = document.body.children;
+        for(var i=0;i<children.length;i++){
+            if(children[i].nodeName.toLowerCase()=="img"){
+                document.body.removeChild(children[i]);
+                break;
+            }
+        }
+        document.body.appendChild(img);// rend original pic first to define width & height
+        clnImg.src = img.src;
+        clnImg.width = img.width;
+        clnImg.height = img.height;
+        clnImg.style.width = img.width + "px";
+        clnImg.style.height = img.height + "px";
+        img.style.display = "none";// hide original pic
+        return clnImg;
+    };
     this.calculateImgSize = function(borderW,borderH){
        if(w>h){
             while(w>=borderW*0.7){

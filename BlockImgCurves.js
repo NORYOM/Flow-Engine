@@ -73,7 +73,10 @@ function BlockImgCurves(){
                     }
                     curvX.push(255);
                     curvY.push(255);
-                    img = new Image();
+
+                    // clone image
+                    img = imageView.cloneImg(clnImg);
+
                     $AI(clnImg).act("curve",curvX,curvY).replace(img);
                     // make sure out value is the newest and will not lost
                     this.outPt[0].value = img;
