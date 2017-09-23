@@ -18,6 +18,7 @@ function BlockImgSave(){
         });
     };
 
+    var imageView = new ImageView();
     var img;
     var done = false;
     var opArr;
@@ -37,26 +38,33 @@ function BlockImgSave(){
 
     function decodeOperation(){
         if(opArr){
-            img = new Image();
-            var temp = new Image();
+            var aiTmp;
             for(var i=0;i<opArr.length;i++){
                 if(opArr[i].type=="src"){
-                    temp = opArr[i].value;
-                    img.src = opArr[i].value.src;
+                    img = imageView.cloneImg(opArr[i].value);
                 }
-                if(temp){
+                if(img){
                     if(opArr[i].type=="ps"){
-                        $AI(temp).ps(opArr[i].value).replace(img);
+                        if(!aiTmp){
+                            aiTmp = $AI(img);
+                        }
+                        aiTmp = aiTmp.ps(opArr[i].value);
                     }
                     if(opArr[i].type=="act"){
+                        if(!aiTmp){
+                            aiTmp = $AI(img);
+                        }
                         var act = opArr[i].value;
                         if(act){
                             if(act.action=="curve"){
-                                $AI(img).act("curve",act.param[0],act.param[1]).replace(img);
+                                aiTmp = aiTmp.act("curve",act.param[0],act.param[1]);
                             }
                         }
                     }
                 }
+            }
+            if(aiTmp){
+                aiTmp.replace(img);
             }
         }else{
             img = null;
@@ -96,7 +104,7 @@ function BlockImgSave(){
                     div.appendChild(document.createElement("br"));
                     div.appendChild(document.createElement("br"));
                     var showImg = new Image();
-                    showImg.src = img.src
+                    showImg.src = img.src;
                     if(img.width>img.height){
                         showImg.width = window.innerWidth/2;
                     }else{
