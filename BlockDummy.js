@@ -16,8 +16,6 @@ function BlockDummy(){
     }
     sel.setDefaultOption(4);
 
-    this.onmouseup = function(e){
-    };
     this.onmousemove = function(e){
         this.parentType.onmousemove.call(this,e);
         sel.onmousemove(e);
