@@ -71,6 +71,9 @@ function BaseObj(){
     };
     this.onmousemove = function(e){
     };
+    this.passEvent = function(e){
+    // pass event from top level when mouse out of area and some event must process
+    };
 
     this.rend = function(){
         // base shape

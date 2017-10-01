@@ -9,5 +9,29 @@ function BlockDummy(){
 
     this.inPt = [new ParamPoint()];
     this.outPt = [];
+
+    var sel = new Selector();
+    for(var i=0;i<5;i++){
+        sel.addOption(i+2,"测试"+i+2);
+    }
+    sel.setDefaultOption(4);
+
+    this.onmouseup = function(e){
+    };
+    this.onmousemove = function(e){
+        this.parentType.onmousemove.call(this,e);
+        sel.onmousemove(e);
+    };
+    this.passEvent = function(e){
+        this.parentType.onmousedown.call(this,e);
+        sel.onmousedown(e);
+    }
+
+    this.rend = function(){
+        this.parentType.rend.call(this);
+
+        sel.setPos(this.x,this.y+this.h-20);
+        sel.rend();
+    };
 }
 

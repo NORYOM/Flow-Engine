@@ -55,6 +55,7 @@ function initCanvas(canvasId,width,height){
 				objArr[i].onmousedown(e);
 				objExclusiveLock = true;
     		}
+    		objArr[i].passEvent(e);// pass event when mouse out of area and some event must process
     		mouseInPanel += objArr[i].isInArea(e.clientX,e.clientY)?1:0;
     		objArr[i].onmousedownOutPt(e);
     	}
