@@ -21,6 +21,8 @@ function Selector(){
     var openedH = 10;
     var highLightX,highLightY,highLightW,highLightH;
     var firstItemCanHighlight = false;
+    var oldValue = selectedItem;
+    var event;
 
     this.setPos = function(x,y){
         this.x = x;
@@ -58,6 +60,9 @@ function Selector(){
     this.getValue = function(){
         return option[selectedItem].value;
     }
+    this.setEvtName = function(name){
+        event = new CustomEvent(name);
+    }
 
     this.onmousedown = function(e){
         if(this.isInSelectorArea(e.clientX,e.clientY) && option.length>1){
@@ -65,9 +70,13 @@ function Selector(){
         }
         if(!showItems){
             firstItemCanHighlight = false;
+            if(oldValue!=selectedItem){
+                oldValue = selectedItem;
+                dispatchEvent(event);
+            }
+        }else{
+            oldValue = selectedItem;
         }
-    };
-    this.onmouseup = function(e){
     };
     this.onmousemove = function(e){
         if(!showItems){
