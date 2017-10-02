@@ -104,7 +104,7 @@ function BlockImgEFS(){
     this.rend = function(){
         this.parentType.rend.call(this);
 
-        sel.setPos(this.x+this.w-this.r-getStrLength(psMethod[3]),this.y+this.r-5);
+        sel.setPos(this.x+this.w-sel.getW(),this.y+this.r-5);
         sel.rend();
     };
 }

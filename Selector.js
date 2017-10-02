@@ -44,6 +44,10 @@ function Selector(){
         option.push({value: optVal,display: optDis});
         openedH = selR*3.5*option.length;
         h = selR*3.5*option.length;
+        var tmpW = getStrLength(optDis);
+        if(tmpW>w-selR){
+            w = tmpW+selR*2;
+        }
     };
     this.clearOption = function(opt){
         option = [];
@@ -108,7 +112,17 @@ function Selector(){
             }
         }
     };
-
+    function getStrLength(str){
+        var realLength = 0;
+        for (var i = 0; i < str.length; i++){
+            charCode = str.charCodeAt(i);
+            if (charCode >= 0 && charCode <= 128)
+            realLength += 1;
+            else
+            realLength += 2;
+        }
+        return realLength*6;
+    }
     function drawArrow(x,y){
         ctx.beginPath();
         ctx.strokeStyle="#eeee99";
