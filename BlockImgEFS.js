@@ -50,7 +50,7 @@ function BlockImgEFS(){
             if(!done){
                 if(sel.getValue()!=0x101){
                     asyncFunc.then(() => {
-                        var clnImg = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.h*1.5);
+                        var clnImg = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.w*1.5);
                         img = new Image();
                         $AI(clnImg).ps(sel.getValue()).replace(img);
                         // make sure out value is the newest and will not lost
@@ -90,12 +90,14 @@ function BlockImgEFS(){
         return realLength*6;
     }
 
+    this.onmousedown = function(e){
+        this.parentType.onmousedown.call(this,e);
+    };
     this.onmousemove = function(e){
         this.parentType.onmousemove.call(this,e);
         sel.onmousemove(e);
     };
     this.passEvent = function(e){
-        this.parentType.onmousedown.call(this,e);
         sel.onmousedown(e);
     }
 

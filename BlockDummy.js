@@ -17,6 +17,9 @@ function BlockDummy(){
     sel.setDefaultOption(4);
     sel.setEvtName("selChanged-"+this.id);
 
+    this.onmousedown = function(e){
+        this.parentType.onmousedown.call(this,e);
+    };
     this.onmousemove = function(e){
         this.parentType.onmousemove.call(this,e);
         sel.onmousemove(e);
