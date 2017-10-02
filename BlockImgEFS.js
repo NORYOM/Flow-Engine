@@ -61,7 +61,7 @@ function BlockImgEFS(){
                                 this.outPt[0].operation.push(this.inPt[0].operation[j]);
                             }
                         }
-                        this.outPt[0].operation.push({type:"ps",value:psMethod[i]});
+                        this.outPt[0].operation.push({type:"ps",value:sel.getValue()});
                         outImgSrc *= -1;
                         img.accessKey = outImgSrc;
                     });
