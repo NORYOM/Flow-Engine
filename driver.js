@@ -241,6 +241,13 @@ function addEFSObj(){
 	objEFS.priority = objArr.length;
 	objArr.push(objEFS);
 }
+function addSEFObj(){
+	var objSEF = new BlockImgSEF();
+	objSEF.setX(100);
+	objSEF.setY(100);
+	objSEF.priority = objArr.length;
+	objArr.push(objSEF);
+}
 function addCurveObj(){
 	var objCurv = new BlockImgCurves();
 	objCurv.setX(100);
