@@ -38,7 +38,7 @@ function BlockImgEFS(){
         done = false;
     });
     this.doAction = function(){
-        if(this.inPt[0].value){
+        if(this.inPt[0].value && this.inPt[0].value instanceof Image){
             if(!oldImgSrc){
                 oldImgSrc = this.inPt[0].value.accessKey;
             }else{

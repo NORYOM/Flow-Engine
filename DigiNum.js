@@ -19,6 +19,12 @@ function DigiNum(){
     this.shut = function(){
         num = null;
     }
+    this.getWidth = function(){
+        return this.triW*4+this.recLen;
+    };
+    this.getHeight = function(){
+        return this.triH*6+this.recLen*2;
+    };
 
     this.drawHorizon = function(x,y,c){
         ctx.save();
@@ -175,21 +181,21 @@ function DigiNum(){
 
     this.rend = function(){
         if(num==null){
-            temDG.drawOff();
+            this.drawOff();
         }else if(num=='test'){
-            temDG.drawOn();
+            this.drawOn();
         }else{
             switch(num){
-                case 0:temDG.draw0();break;
-                case 1:temDG.draw1();break;
-                case 2:temDG.draw2();break;
-                case 3:temDG.draw3();break;
-                case 4:temDG.draw4();break;
-                case 5:temDG.draw5();break;
-                case 6:temDG.draw6();break;
-                case 7:temDG.draw7();break;
-                case 8:temDG.draw8();break;
-                case 9:temDG.draw9();break;
+                case 0:this.draw0();break;
+                case 1:this.draw1();break;
+                case 2:this.draw2();break;
+                case 3:this.draw3();break;
+                case 4:this.draw4();break;
+                case 5:this.draw5();break;
+                case 6:this.draw6();break;
+                case 7:this.draw7();break;
+                case 8:this.draw8();break;
+                case 9:this.draw9();break;
             }
         }
     };

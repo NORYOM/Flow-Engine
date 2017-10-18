@@ -255,6 +255,13 @@ function addCurveObj(){
 	objCurv.priority = objArr.length;
 	objArr.push(objCurv);
 }
+function addDVObj(){
+	var objDV = new BlockDigiValue();
+	objDV.setX(100);
+	objDV.setY(100);
+	objDV.priority = objArr.length;
+	objArr.push(objDV);
+}
 function addSaveObj(){
 	var objSave = new BlockImgSave();
 	objSave.setX(100);

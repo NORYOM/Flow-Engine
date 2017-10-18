@@ -29,7 +29,7 @@ function BlockImgSave(){
         resolve();
     });
     this.doAction = function(){
-        if(this.inPt[0].value){
+        if(this.inPt[0].value && this.inPt[0].value instanceof Image){
             opArr = this.inPt[0].operation;
         }else{
             opArr = null;

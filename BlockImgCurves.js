@@ -51,7 +51,7 @@ function BlockImgCurves(){
     });
     var clnImg;
     this.doAction = function(){
-        if(this.inPt[0].value){
+        if(this.inPt[0].value && this.inPt[0].value instanceof Image){
             if(!oldImgSrc){
                 oldImgSrc = this.inPt[0].value.accessKey;
                 clnImg = imageView.getImgClone(this.inPt[0].value,this.w*1.5,this.h*1.5);

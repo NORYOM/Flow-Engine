@@ -20,7 +20,7 @@ function BlockImgView(){
         this.outPt[0].operation = this.inPt[0].operation;
 
         // init image from input
-        if(this.inPt[0].value){
+        if(this.inPt[0].value && this.inPt[0].value instanceof Image){
             if(!oldImgSrc){
                 imgChanged = true;
             }else{
