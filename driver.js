@@ -248,6 +248,13 @@ function addSEFObj(){
 	objSEF.priority = objArr.length;
 	objArr.push(objSEF);
 }
+function addGaussObj(){
+	var objGauss = new BlockImgGauss();
+	objGauss.setX(100);
+	objGauss.setY(100);
+	objGauss.priority = objArr.length;
+	objArr.push(objGauss);
+}
 function addCurveObj(){
 	var objCurv = new BlockImgCurves();
 	objCurv.setX(100);
@@ -259,6 +266,7 @@ function addDVObj(){
 	var objDV = new BlockDigiValue();
 	objDV.setX(100);
 	objDV.setY(100);
+	objDV.setHorizon(false);
 	objDV.priority = objArr.length;
 	objArr.push(objDV);
 }

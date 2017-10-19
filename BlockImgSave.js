@@ -60,6 +60,8 @@ function BlockImgSave(){
                                 aiTmp = aiTmp.act("curve",act.param[0],act.param[1]);
                             }else if(act.action=="noParam"){
                                 aiTmp = aiTmp.act(act.param);
+                            }else if(act.action=="gaussBlur"){
+                                aiTmp = aiTmp.act(act.param[0],act.param[1]);
                             }
                         }
                     }
