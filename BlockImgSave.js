@@ -87,7 +87,7 @@ function BlockImgSave(){
             if(!saveLnk){
                 saveLnk = document.createElement("a");
                 saveLnk.download = "新图片.jpg";
-                if(navigator.userAgent.indexOf("QQBrowser")==-1){// only QQBrowser support download
+                if(navigator.userAgent.indexOf("QQBrowser")==-1 || img.width*img.height>4416*2936){// only QQBrowser support download
                     var div = document.createElement("div");
                     div.width = window.innerWidth/2;
                     div.height = window.innerHeight/2;
@@ -104,6 +104,7 @@ function BlockImgSave(){
                     btn.onclick = function(){
                         document.body.removeChild(div);
                         div.remove();
+                        img = null;
                     };
                     div.appendChild(document.createElement("br"));
                     div.appendChild(document.createElement("br"));
@@ -118,6 +119,7 @@ function BlockImgSave(){
                     div.style.top = (window.innerHeight-div.height)/2+"px";
                     div.style.left = (window.innerWidth-div.width)/2+"px";
                     div.innerHTML += "<br>" + img.width +"x"+ img.height;
+                    div.innerHTML += "<br>如果尺寸大于4416x2936请复制图片并粘贴到画图板中保存为JPG格式";
                     div.appendChild(document.createElement("br"));
                     div.appendChild(btn);
                     document.body.appendChild(div);
