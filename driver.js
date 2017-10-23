@@ -128,7 +128,8 @@ function initCanvas(canvasId,width,height){
 		    				objArr[i].inPt[j].setLink(bezierTemp);
 		    				objArr[i].inPt[j].addLink();
 	    				}else{
-	    					console.log("already occupied!");
+	    				    console.log("只能有一个输入口，已经被占用");
+	    					alert("只能有一个输入口，已经被占用");
 	    				}
 	    			}
 	    		}

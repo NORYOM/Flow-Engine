@@ -131,7 +131,8 @@ function BlockImgSave(){
                 saveLnk = null;
             }
         }else{
-            console.log("no image can save");
+            console.log("没有图片可以保存");
+            alert("没有图片可以保存");
         }
     }
 
