@@ -1,14 +1,16 @@
-function ParamPoint(canvas){
+function ParamPoint(){
     var cvs = canvas;
-    var cvsRect = canvas.getBoundingClientRect();
 
+    this.id = (new Date()).getTime()+Math.random();
     this.x = 0;
     this.y = 0;
-    this.colorOff = "#cccccc";
-    this.colorReday = "#77cc77";
-    this.colorOccupied = "#cc7777";
-    this.colorMouseDown = "#7777cc";
-    this.colorOn = "#cccc00";
+    colorOff = "#cccccc";
+    colorReday = "#77cc77";
+    colorOccupied = "#cc7777";
+    colorMouseDown = "#7777cc";
+    colorOn = "#cccc00";
+    this.value = null;
+    this.operation = null;
 
     var parameterPointR = 5;
     var mouseDrag = false;
@@ -38,9 +40,6 @@ function ParamPoint(canvas){
     this.getCVS = function(){
         return cvs;
     };
-    this.getCVSRect = function(){
-        return cvsRect;
-    };
     this.setX = function(n){
         this.x = n;
     };
@@ -67,8 +66,8 @@ function ParamPoint(canvas){
     };
 
     this.isInParamPos = function(mx,my){
-        var cx = mx-this.getCVSRect().left*(this.getCVS().width/this.getCVSRect().width);
-        var cy = my-this.getCVSRect().top*(this.getCVS().height/this.getCVSRect().height);
+        var cx = mx-cvsRect.left*(this.getCVS().width/cvsRect.width);
+        var cy = my-cvsRect.top*(this.getCVS().height/cvsRect.height);
         
         if(cx>this.x-parameterPointR && cx<(this.x+parameterPointR)
         && cy>this.y-parameterPointR && cy<(this.y+parameterPointR)){
@@ -96,11 +95,11 @@ function ParamPoint(canvas){
         }
     };
 
-    this.rend = function(ctx){
-        // refresh canvas bounding, incase scroll page
-        cvsRect = canvas.getBoundingClientRect();
-        var ptColor = mouseDrag?(lnkNum?(readyForLink?this.colorOccupied:this.colorOn):(readyForLink?this.colorReday:this.colorOff)):(lnkNum?this.colorOn:this.colorOff);
-        ptColor = mouseDown?this.colorMouseDown:ptColor;
+    this.rend = function(){
+        var ptColor = mouseDrag?(lnkNum?(readyForLink?colorOccupied:colorOn):(readyForLink?colorReday:colorOff)):(lnkNum?colorOn:colorOff);
+        ptColor = mouseDown?colorMouseDown:ptColor;
+
+        ctx.save();
 
         ctx.beginPath();
         ctx.arc(this.x, this.y, parameterPointR, (Math.PI/180)*0, (Math.PI/180)*360, false);
@@ -110,6 +109,8 @@ function ParamPoint(canvas){
         ctx.fillStyle=ptColor;
         ctx.fill();
         ctx.closePath();
+
+        ctx.restore();
     };
 }
 

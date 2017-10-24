@@ -1,11 +1,10 @@
-function Bezier(canvas){
+function Bezier(){
     var startX=0, startY=0;
     var startDraw = false;
     var mx;
     var my;
     var drag = false;
     var cvs = canvas;
-    var cvsRect = canvas.getBoundingClientRect();
     var showControlPoint = false;
     var softControlPoint = true;
     var canDrawBezier = false;
@@ -42,6 +41,15 @@ function Bezier(canvas){
     this.isDrawing = function(){
     	return drag;
     };
+    this.setDrawing = function(flag){
+    	drag = flag;
+    };
+    this.isDrawn = function(){
+    	return startDraw;
+    };
+    this.setDrawn = function(flag){
+    	startDraw = flag;
+    };
 
     this.onmousedown = function(e){
         if(canDrawBezier){
@@ -64,10 +72,7 @@ function Bezier(canvas){
     this.onmousemove = function(e){
     };
 
-    this.rend = function(ctx){
-        // refresh canvas bounding, incase scroll page
-        cvsRect = canvas.getBoundingClientRect();
-
+    this.rend = function(){
         if(startObj){
             startX = startObj.x;
             startY = startObj.y;

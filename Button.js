@@ -1,6 +1,5 @@
-function Button(canvas){
+function Button(){
     var cvs = canvas;
-    var cvsRect = canvas.getBoundingClientRect();
 
     this.x = 0;
     this.y = 0;
@@ -9,16 +8,16 @@ function Button(canvas){
     this.colorOff = "#cccccc";
     this.colorMouseDown = "#dddddd";
     this.colorOn = "#eeeeee";
+    this.label = "测试";
 
+    var labelW = 0;// length of label characters
     var buttonR = 5;
     var mouseOver = false;
     var mouseDown = false;
+    var disabled = false;
 
     this.getCVS = function(){
         return cvs;
-    };
-    this.getCVSRect = function(){
-        return cvsRect;
     };
     this.setX = function(n){
         this.x = n;
@@ -33,10 +32,27 @@ function Button(canvas){
     this.getR = function(x,y){
         return buttonR;
     };
+    this.setDisable = function(flag){
+        disabled = flag;
+    };
+
+    this.getLabelLength = function(){
+        var realLength = 0;
+        for (var i = 0; i < this.label.length; i++)
+        {
+            charCode = this.label.charCodeAt(i);
+            if (charCode >= 0 && charCode <= 128)
+            realLength += 1;
+            else
+            realLength += 2;
+        }
+        labelW = realLength*6;
+        return labelW;
+    }
 
     this.isInBtnArea = function(mx,my){
-        var cx = mx-this.getCVSRect().left*(this.getCVS().width/this.getCVSRect().width);
-        var cy = my-this.getCVSRect().top*(this.getCVS().height/this.getCVSRect().height);
+        var cx = mx-cvsRect.left*(this.getCVS().width/cvsRect.width);
+        var cy = my-cvsRect.top*(this.getCVS().height/cvsRect.height);
         
         if(cx>this.x-buttonR && cx<(this.x+this.w+buttonR)
         && cy>this.y-buttonR && cy<(this.y+this.h+buttonR)){
@@ -46,6 +62,9 @@ function Button(canvas){
     };
 
     this.onmousedown = function(e){
+        if(disabled){
+            return;
+        }
         if(this.isInBtnArea(e.clientX,e.clientY)){
             mouseDown = true;
         }
@@ -59,6 +78,9 @@ function Button(canvas){
         mouseDown = false;
     };
     this.onmousemove = function(e){
+        if(disabled){
+            return;
+        }
         if(this.isInBtnArea(e.clientX,e.clientY)){
             mouseOver = true;
         }else{
@@ -69,11 +91,12 @@ function Button(canvas){
 
     };
 
-    this.rend = function(ctx){
-        // refresh canvas bounding, incase scroll page
-        cvsRect = canvas.getBoundingClientRect();
+    this.rend = function(){
+        this.w = this.getLabelLength();
 
-        var btntColor = mouseDown?this.colorMouseDown:(mouseOver?this.colorOn:this.colorOff);
+        var btnColor = mouseDown?this.colorMouseDown:(mouseOver?this.colorOn:this.colorOff);
+
+        ctx.save();
 
         ctx.beginPath();
 
@@ -89,12 +112,16 @@ function Button(canvas){
         ctx.strokeStyle="#000000";
         ctx.lineWidth=2;
         ctx.stroke();
-        ctx.fillStyle=btntColor;
-        ctx.fill();
+        ctx.fillStyle=btnColor;
+        if(disabled){
+            ctx.fillStyle = "#666666";
+        }
         ctx.fill();
         ctx.fillStyle = '#222222';
-        ctx.fillText("测试",this.x-buttonR/4,this.y+buttonR*3/2);
+        ctx.fillText(this.label,this.x,this.y+buttonR*3/2);
         ctx.closePath();
+
+        ctx.restore();
     };
 }
 

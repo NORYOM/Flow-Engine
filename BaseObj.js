@@ -1,4 +1,4 @@
-function BaseObj(canvas){
+function BaseObj(){
     this.r = 20;
     this.w = 100;
     this.h = 50;
@@ -13,7 +13,6 @@ function BaseObj(canvas){
     var drag = false;
 
     var cvs = canvas;
-    this.cvsRect = canvas.getBoundingClientRect();
 
     this.setR = function(n){
         this.r = n;
@@ -36,18 +35,15 @@ function BaseObj(canvas){
     this.getCVS = function(){
         return cvs;
     };
-    this.getCVSRect = function(){
-        return this.cvsRect;
-    };
 
     this.isInArea = function(mx,my){
-        var cx = mx-this.cvsRect.left*(cvs.width/this.cvsRect.width);
-        var cy = my-this.cvsRect.top*(cvs.height/this.cvsRect.height);
+        var cx = mx-cvsRect.left*(cvs.width/cvsRect.width);
+        var cy = my-cvsRect.top*(cvs.height/cvsRect.height);
         return (cx>this.x-this.r && cx<(this.x+this.w+this.r) && cy>this.y-this.r && cy<(this.y+this.h+this.r));
     };
     this.isInTitleBar = function(mx,my){
-        var cx = mx-this.cvsRect.left*(cvs.width/this.cvsRect.width);
-        var cy = my-this.cvsRect.top*(cvs.height/this.cvsRect.height);
+        var cx = mx-cvsRect.left*(cvs.width/cvsRect.width);
+        var cy = my-cvsRect.top*(cvs.height/cvsRect.height);
         return (cx>this.x-this.r && cx<(this.x+this.w+this.r) && cy>this.y-this.r && cy<this.y);
     };
 
@@ -75,19 +71,18 @@ function BaseObj(canvas){
     };
     this.onmousemove = function(e){
     };
+    this.passEvent = function(e){
+    // pass event from top level when mouse out of area and some event must process
+    };
 
-    this.rend = function(ctx){
-        // refresh canvas bounding, incase scroll page
-        this.cvsRect = canvas.getBoundingClientRect();
+    this.rend = function(){
         // base shape
         ctx.save();
         ctx.lineWidth=1;
         ctx.beginPath();
         ctx.strokeStyle="#000000";
         
-        ctx.arc(this.x, this.y, this.r, (Math.PI/180)*180, -1*(Math.PI/180)*90, false);//TL
-        ctx.lineTo(this.x+this.w,this.y-this.r);//T
-        ctx.arc(this.x+this.w, this.y, this.r, -1*(Math.PI/180)*90, (Math.PI/180)*0, false);//TR
+        ctx.moveTo(this.x+this.w+this.r,this.y);
         ctx.lineTo(this.x+this.w+this.r,this.y+this.h);//R
         ctx.arc(this.x+this.w, this.y+this.h, this.r, (Math.PI/180)*0, (Math.PI/180)*90, false);//RB
         ctx.lineTo(this.x,this.y+this.h+this.r);//B
@@ -108,6 +103,7 @@ function BaseObj(canvas){
         ctx.lineTo(this.x+this.w,this.y-this.r);//T
         ctx.arc(this.x+this.w, this.y, this.r, -1*(Math.PI/180)*90, (Math.PI/180)*0, false);//TR
         ctx.lineTo(this.x+this.w+this.r,this.y);//C
+        ctx.stroke();
         ctx.fillStyle = this.titleColor;
         ctx.fill();
         ctx.fillStyle = '#eeeebb';

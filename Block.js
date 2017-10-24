@@ -1,13 +1,22 @@
-function Block(canvas){
-    BaseObj.call(this, canvas);
-    this.prototype = new BaseObj(canvas);
+function Block(){
+    BaseObj.call(this);
+    this.prototype = new BaseObj();
+    this.id = (new Date()).getTime()+Math.random();
     this.h=100;
+    var closed = false;
 
-    this.inPt = [new ParamPoint(canvas),new ParamPoint(canvas)];
-    this.outPt = [new ParamPoint(canvas),new ParamPoint(canvas)];
+    this.config = {};//save properties of block like settings, value and so on
+    this.inPt = [new ParamPoint(),new ParamPoint()];
+    this.outPt = [new ParamPoint(),new ParamPoint()];
+    this.btnClose = new Button();
+    this.btnClose.label = "关闭";
+    this.btnClose.doAction = function(){
+        closed = true;
+    };
 
     this.onmousedown = function(e){
         this.prototype.onmousedown.call(this,e);
+        this.btnClose.onmousedown(e);
     };
     this.onmousedownOutPt = function(e){
         for(var i=0;i<this.outPt.length;i++){
@@ -23,6 +32,7 @@ function Block(canvas){
     };
     this.onmouseup = function(e){
         this.prototype.onmouseup.call(this,e);
+        this.btnClose.onmouseup(e);
 
         for(var i=0;i<this.inPt.length;i++){
             this.inPt[i].onmouseup(e);
@@ -33,24 +43,36 @@ function Block(canvas){
     };
     this.onmousemove = function(e){
         this.prototype.onmousemove.call(this,e);
+        this.btnClose.onmousemove(e);
+    };
+    this.doAction = function(){
+
+    };
+    this.isClosed = function(){
+        return closed;
     };
 
-    this.rend = function(ctx){
-        this.prototype.rend.call(this,ctx);
+    this.rend = function(){
+        this.prototype.rend.call(this);
 
         // in
-        this.inPt[0].setPos(this.x-this.r,this.y+this.r);
-        this.inPt[1].setPos(this.x-this.r,this.y+this.h);
         for(var i=0;i<this.inPt.length;i++){
-            this.inPt[i].rend(ctx);
+            this.inPt[i].setPos(this.x-this.r,this.y+this.r+this.r*i);
+            this.inPt[i].rend();
         }
 
         // out
-        this.outPt[0].setPos(this.x+this.w+this.r,this.y+this.h-this.r);
-        this.outPt[1].setPos(this.x+this.w+this.r,this.y+this.h);
         for(var i=0;i<this.outPt.length;i++){
-            this.outPt[i].rend(ctx);
+            this.outPt[i].setPos(this.x+this.w+this.r,this.y+this.h-this.r*i);
+            this.outPt[i].rend();
         }
+
+        // close button
+        this.btnClose.setPos(this.x,this.y+this.h);
+        this.btnClose.rend();
+
+        // run what the block should do
+        this.doAction();
     };
 }
 
