@@ -5,7 +5,7 @@ function drawGrid(mainCvs,width,height){
     	bgCvs = document.createElement("canvas");
     }
     bgCvs.style.position = "absolute";
-    bgCvs.style.border = "1px solid green";
+    bgCvs.style.border = "0px solid green";
     bgCvs.width = width;
     bgCvs.height = height;
     bgCvs.style.left = mainCvs.style.left;

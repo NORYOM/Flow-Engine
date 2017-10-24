@@ -21,6 +21,7 @@ function BlockImgFile(){
         var fileLoader = document.getElementById("loadFile"+fileId);
         // change file
         fileLoader.onchange = function(event) {
+            showLoading();
             var reader = new FileReader();
             // load file
             reader.onload = function(event){
@@ -78,6 +79,7 @@ function BlockImgFile(){
     this.doAction = function(){
         if(tempImgData){
             if(imgLoaded){
+                hideLoading();
                 this.outPt[0].value = tempImgData;
                 this.outPt[0].operation = [{type:"src",value:imgClone}];
                 imgLoaded = false;

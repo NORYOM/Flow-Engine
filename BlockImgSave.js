@@ -12,11 +12,16 @@ function BlockImgSave(){
     this.btnSave = new Button();
     this.btnSave.label = "保存新图片";
     this.btnSave.doAction = function(){
+        showLoading();
+        setTimeout(callSave,30);// delay 30 ms for show loading box
+    };
+    function callSave(){
         asyncFunc.then(() => {
             decodeOperation();
             saveImg();
+            hideLoading();
         });
-    };
+    }
 
     var imageView = new ImageView();
     var img;
@@ -87,7 +92,7 @@ function BlockImgSave(){
             if(!saveLnk){
                 saveLnk = document.createElement("a");
                 saveLnk.download = "新图片.jpg";
-                if(navigator.userAgent.indexOf("QQBrowser")==-1 || img.width*img.height>4416*2936){// only QQBrowser support download
+                if(navigator.userAgent.indexOf("QQBrowser")==-1 || img.width*img.height>1920*1152){// only QQBrowser and size less then 2560*1536 support download
                     var div = document.createElement("div");
                     div.width = window.innerWidth/2;
                     div.height = window.innerHeight/2;
@@ -96,8 +101,9 @@ function BlockImgSave(){
                     div.style.position = "absolute";
                     div.style.backgroundColor = "#777777";
                     div.style.color = "#ffff77";
-                    div.style.border = "solid 1px #000000";
+                    div.style.border = "solid 1px #eeeebb";
                     div.innerHTML = "&nbsp;&nbsp;正在使用的浏览器出于安全原因可能会阻止图片自动下载，请右单击图片保存。";
+                    div.innerHTML += "<br>&nbsp;如果尺寸大于1920x1152请右单击图片复制并粘贴到画图板中保存为JPG格式";
                     var btn = document.createElement("input");
                     btn.type = "button";
                     btn.value = "点击关闭";
@@ -119,7 +125,6 @@ function BlockImgSave(){
                     div.style.top = (window.innerHeight-div.height)/2+"px";
                     div.style.left = (window.innerWidth-div.width)/2+"px";
                     div.innerHTML += "<br>" + img.width +"x"+ img.height;
-                    div.innerHTML += "<br>如果尺寸大于4416x2936请复制图片并粘贴到画图板中保存为JPG格式";
                     div.appendChild(document.createElement("br"));
                     div.appendChild(btn);
                     document.body.appendChild(div);
