@@ -22,7 +22,6 @@ function BlockImgSEF(){// single effect
     }
     sel.setDefaultOption(0);
     sel.setEvtName("selChanged-"+this.id);
-    var selChanged = false;
 
     var done = false;
     var oldImgSrc;
@@ -32,7 +31,6 @@ function BlockImgSEF(){// single effect
         resolve();
     });
     addEventListener("selChanged-"+this.id, function(e){
-        selChanged = true;
         done = false;
     });
     this.doAction = function(){
