@@ -24,7 +24,6 @@ function BlockImgEFS(){
     }
     sel.setDefaultOption(0);
     sel.setEvtName("selChanged-"+this.id);
-    var selChanged = false;
 
     var done = false;
     var oldImgSrc;
@@ -34,7 +33,6 @@ function BlockImgEFS(){
         resolve();
     });
     addEventListener("selChanged-"+this.id, function(e){
-        selChanged = true;
         done = false;
     });
     this.doAction = function(){
